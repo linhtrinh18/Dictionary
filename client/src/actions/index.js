@@ -18,7 +18,7 @@ export const signIn = (userId) => {
 
 export const signOut = () => {
     return {
-        type: SIGN_OUT
+        type: SIGN_OUT,
     };
 };
 
@@ -32,13 +32,15 @@ export const createDict = formValues => async (dispatch, getState) => {
 };
 
 
-export const fetchDicts = () => async dispatch => {
-    const response = await dict.get('/dict');
+export const fetchDicts = (userId) => async dispatch => {
+    // console.log("my userId",userId)
+    const response = await dict.get(`/dict/${userId}`);
+    // console.log("Response", response)
     dispatch({type: FETCH_DICTS, payload: response.data});
 }
 
 export const fetchDict = (_id) => async dispatch => {
-    console.log("FETCH DICT", _id)
+    // console.log("FETCH DICT", _id)
     const response = await dict.get(`/dict/${_id}`);
     dispatch({type: FETCH_DICT, payload: response.data});
 }

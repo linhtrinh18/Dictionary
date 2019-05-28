@@ -1,4 +1,5 @@
 import { SIGN_IN, SIGN_OUT } from '../actions/types'
+import _ from 'lodash'
 
 const INITIAL_STATE = {
     isSignedIn: null,
@@ -11,7 +12,7 @@ export default (state = INITIAL_STATE, action) => {
         case SIGN_IN:
             return {...state, isSignedIn:true, userId: action.payload}
         case SIGN_OUT:
-            return {...state, isSignedIn:false, userId: null}
+            return {..._.omit(state),isSignedIn:false, userId: null};
         default:
             return state;
     }
