@@ -58,6 +58,7 @@ class WordList extends React.Component {
                 </div>
               </div>  
             )};
+            return <div></div>
         })
     }
     

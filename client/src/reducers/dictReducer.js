@@ -13,14 +13,13 @@ export default (state = {}, action) => {
         case FETCH_DICT:
             return {...state, [action.payload._id]: action.payload};
         case CREATE_DICT:
-            return {...state, [action.payload._id]: action.payload};
+            // return {...state, dictionary:action.payload};
+            return Object.assign(state, action.payload);
         case EDIT_DICT:
             return {...state, [action.payload._id]: action.payload};
         case DELETE_DICT:
             return _.omit(state, action.payload);
         default:
             return state;
-            
-        
     }
 };

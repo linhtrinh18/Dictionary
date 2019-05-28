@@ -69,4 +69,11 @@ const formWrapped = reduxForm({
     validate: validate
 })(WordCreate);
 
-export default connect(null, {createDict})(formWrapped)
+
+const mapStateToProps = (state) => {
+    console.log("CREATE STATE",state)
+    return {oxford: state.dict}
+}
+
+
+export default connect(mapStateToProps, {createDict})(formWrapped)

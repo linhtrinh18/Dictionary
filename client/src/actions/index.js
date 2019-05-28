@@ -7,7 +7,7 @@ import { SIGN_IN,
         EDIT_DICT
 } from './types.js';
 import dict from '../apis/dictionary';
-import history from '../history';
+// import history from '../history';
 
 export const signIn = (userId) => {
     return {
@@ -26,9 +26,12 @@ export const signOut = () => {
 export const createDict = formValues => async (dispatch, getState) => {
     // Remember to createDict only have a userId attach to it
     const {userId} = getState().auth;
-    const response = await dict.post('/dict',{...formValues, userId});
-    dispatch({type: CREATE_DICT, payload: response.data});
-    history.push('/');
+    const responseGoogle = await dict.post('/google',{...formValues, userId});
+    dispatch({type: CREATE_DICT, payload: responseGoogle.data});
+    // Take the base Form from GoogleAPI
+    formValues.word = responseGoogle.data.word
+    const responseOxford = await dict.post('/oxford',{...formValues, _id: responseGoogle.data._id});
+    dispatch({type: CREATE_DICT, payload: responseOxford.data});
 };
 
 
