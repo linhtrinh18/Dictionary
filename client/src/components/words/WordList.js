@@ -111,5 +111,4 @@ const mapStateToProps = (state) => {
     }
 }
 
- 
 export default connect(mapStateToProps,{fetchDicts})(WordList);

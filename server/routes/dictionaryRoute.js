@@ -24,12 +24,10 @@ router.get('/dict/:userId', async (req, res)=>{
     }
 })
 
-
 router.post('/oxford', async (req, res)=>{
     const response = await oxfordApi(req.body.word)
     res.status(201).send(response);
-    // console.log("Oxford Done")
-    // console.log("OXFORD RESPONSE: ", response)
+    // console.log("OXFORD RESPONSE: ", JSON.stringify(response))
     try {
         const dict = await Dict.findById(req.body._id)
     }catch (e) {
@@ -41,9 +39,8 @@ router.post('/oxford', async (req, res)=>{
 router.post('/google', async (req, res) => {
     const response = await googleApi(req.body.word)
     const baseFrom = helper.checkBaseform(response.data)
+    // console.log('GOOGLE RESPONSE, ' , response.data)
     req.body.word = baseFrom;
-    // console.log("GOOGLE RESPONSE: ", response.data)
-    // console.log("GOOGLE DONE")
     const dict = new Dict(req.body)
     try {
         await dict.save()

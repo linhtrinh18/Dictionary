@@ -5,17 +5,6 @@ import { createDict } from '../../actions';
 
 
 class WordCreate extends React.Component {
-    // renderInput (formProps) {
-    //     return (
-    //         <input   
-    //             onChange = {formProps.input.onChange}
-    //             value = {formProps.input.value}
-    //         />
-    //     );
-    // }
-    // renderInput (formProps) {
-    //     return <input {...formProps.input}/>
-    // }
     renderError({error, touched}) {
         if(touched && error) {
             return (
@@ -27,13 +16,14 @@ class WordCreate extends React.Component {
         }
     }
     
-    
     renderInput = ({input, label, meta}) => {
         // console.log(meta)
         return (
-            <div className="field">
-                <label>{label}</label>
-                <input {...input} autoComplete="off"/>
+            <div>
+                <div className="form-inline mt-2">
+                    <input {...input} placeholder="type here" class="form-control w-25" autofocus autocomplete="off"/>
+                    <button className="btn btn-success ml-2">Search</button>
+                </div>
                 {this.renderError(meta)}
             </div>
         );
@@ -46,10 +36,14 @@ class WordCreate extends React.Component {
     
     render() {
         return (
-            <form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
-                <Field name="word" component={this.renderInput} label="Enter Word" />
-                <button className="ui button primary">Search</button>
-            </form>
+            <div className="container pb-2">
+                <h1 class="mt-5">Looking for new words?</h1>
+                <lead>That's great! Let's find out something interesting </lead>
+                <div className="form-inline"></div>
+                <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
+                    <Field name="word" component={this.renderInput} />
+                </form>
+            </div>
             );
     }
 }
@@ -71,7 +65,7 @@ const formWrapped = reduxForm({
 
 
 const mapStateToProps = (state) => {
-    console.log("CREATE STATE",state)
+    // console.log("CREATE STATE",state)
     return {oxford: state.dict}
 }
 

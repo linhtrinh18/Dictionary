@@ -11,7 +11,7 @@ import history from '../history';
 const App = () => {
     return (
         <Router history={history}>
-            <div className="ui container">
+            <div >
                 <Header />
                 <Route path='/' exact component= {WordList} />
                 <Route path='/words/new' exact component= {WordCreate} />
