@@ -105,7 +105,7 @@ class WordList extends React.Component {
 const mapStateToProps = (state) => {
     // console.log("WorldList STATE" , state)
     return {
-        dicts: Object.values(state.dict),
+        dicts: Object.values(state.user),
         currentUserId: state.auth.userId,
         isSignedIn: state.auth.isSignedIn
     }

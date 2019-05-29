@@ -10,7 +10,7 @@ let helper = require('./helper/helper')
 // Get all of the Dict
 router.get('/dict/:userId', async (req, res)=>{
     const userId = req.params.userId
-    console.log(req.params)
+    // console.log(req.params)
     try {
         const dict = await Dict.find({userId})
         console.log("dict", dict)
@@ -26,14 +26,12 @@ router.get('/dict/:userId', async (req, res)=>{
 
 
 router.post('/oxford', async (req, res)=>{
-    console.log("Check body",req.body)
     const response = await oxfordApi(req.body.word)
-    const word = response.data.results[0].lexicalEntries
-    // console.log("OXFORD EXTRACT" ,JSON.stringify(response.data.results[0]))
-    res.status(201).send(word);
+    res.status(201).send(response);
+    // console.log("Oxford Done")
+    // console.log("OXFORD RESPONSE: ", response)
     try {
         const dict = await Dict.findById(req.body._id)
-        console.log("FindByID" ,dict)
     }catch (e) {
         res.status(400).send(e)
     }
@@ -42,19 +40,22 @@ router.post('/oxford', async (req, res)=>{
 // FETCH DATA FROM GOOGLE
 router.post('/google', async (req, res) => {
     const response = await googleApi(req.body.word)
-    // console.log(JSON.stringify(response.data))
     const baseFrom = helper.checkBaseform(response.data)
     req.body.word = baseFrom;
+    // console.log("GOOGLE RESPONSE: ", response.data)
+    // console.log("GOOGLE DONE")
     const dict = new Dict(req.body)
     try {
         await dict.save()
-        res.status(201).send(dict);
+        // console.log("DICT: ", {data: dict, })
+        res.status(201).send({data: dict, google:response.data});
     }catch(e) {
         res.status(400).send(e)
     }
 });
 
 router.post('/bing', async (req, res) => {
+    console.log("BING DONE")
     const response = await bingImage(req.body.word)
     // console.log(response)
     res.status(201).send(response);

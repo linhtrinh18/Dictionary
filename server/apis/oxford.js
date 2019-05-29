@@ -12,6 +12,6 @@ module.exports.oxfordApi = async (word_id) => {
       	}  
     })
     // console.log(response)
-    return response
+    return {oxford: response.data.results[0].lexicalEntries}
 }
 
