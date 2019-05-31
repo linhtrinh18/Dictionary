@@ -25,11 +25,14 @@ router.get('/dict/:userId', async (req, res)=>{
 })
 
 router.post('/oxford', async (req, res)=>{
-    const response = await oxfordApi(req.body.word)
-    res.status(201).send(response);
-    // console.log("OXFORD RESPONSE: ", JSON.stringify(response))
     try {
-        const dict = await Dict.findById(req.body._id)
+        const response = await oxfordApi(req.body.word)
+        res.status(201).send({oxford: response});
+        // console.log(JSON.stringify(response.oxford))
+        const oxfordData = helper.renderEnglishMeaning(response)
+        // console.log("oxfordData", JSON.stringify(oxfordData))
+        const dict = await Dict.findByIdAndUpdate(req.body._id,{en: oxfordData.oxfordData, pro:oxfordData.phoneticSpelling, aud:oxfordData.audioFile }, {new: true})
+        // console.log("DICT NE,", dict)
     }catch (e) {
         res.status(400).send(e)
     }
@@ -39,15 +42,20 @@ router.post('/oxford', async (req, res)=>{
 router.post('/google', async (req, res) => {
     const response = await googleApi(req.body.word)
     const baseFrom = helper.checkBaseform(response.data)
-    // console.log('GOOGLE RESPONSE, ' , response.data)
-    req.body.word = baseFrom;
-    const dict = new Dict(req.body)
-    try {
-        await dict.save()
-        // console.log("DICT: ", {data: dict, })
-        res.status(201).send({data: dict, google:response.data});
-    }catch(e) {
-        res.status(400).send(e)
+    // Check valid word
+    if(response.data.dict) {
+        req.body.word = baseFrom;
+        const saveData = helper.saveVietMean(req.body,response.data)
+        const dict = new Dict(saveData)
+        try {
+            await dict.save()
+            res.status(201).send({data: dict, google:response.data});
+        }catch(e) {
+            res.status(400).send(e)
+        }
+    } else {
+    //Send the unvalid word back to client
+    res.status(201).send({google:req.body.word});
     }
 });
 
@@ -67,7 +75,21 @@ router.post('/bing', async (req, res) => {
 });
 
 
+router.post('/bingimage', async (req, res) => {
+    console.log("BING IMAGE", req.body)
+    const _id = req.body.userId
+    try {
+        const dict = await Dict.findByIdAndUpdate(req.body._id,{img:[req.body.img]}, {new: true})
+        if (!dict){
+            return res.status(404).send()
+        }
+        res.send(dict)
+    } catch (e) {
+        console.log("error")
+        res.status(400).send(e)
+    }
 
+});
 
 
 

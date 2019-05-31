@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux';
-import { createDict } from '../../actions';
+import { createGoogle } from '../../actions';
 
 
 class WordCreate extends React.Component {
@@ -70,4 +70,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps, {createDict})(formWrapped)
+export default connect(mapStateToProps, {createGoogle})(formWrapped)

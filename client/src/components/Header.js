@@ -1,27 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import GoogleAuth from './GoogleAuth'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, reset } from 'redux-form'
 import { connect } from 'react-redux';
-import { createDict } from '../actions';
+import { createGoogle } from '../actions';
+import { createBing } from '../actions';
+
+
 
 class Header extends React.Component {
-    
+
     onSubmit = (formValues) => {
-        this.props.createDict(formValues)
+        this.props.clearSubmit()
+        this.props.createGoogle(formValues)
+        this.props.createBing(formValues)
     }
-    
+
     renderInput = ({input, label, meta}) => {
-        // console.log(meta)
         return (
             <div>
-                <input {...input} className="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="word" autofocus/>
+                <input {...input} className="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="word" autoFocus/>
                 <button className="btn btn-success my-2 my-sm-0" type="submit">Search</button>
             </div>
         );
     }
-    
-    
+
+
     render() {
         return (
             <div>
@@ -41,13 +45,11 @@ class Header extends React.Component {
                         </Link>
                       </li>
                     </ul>
-                    
-                    
-                    <form onSubmit={this.props.handleSubmit(this.onSubmit)} className="form-inline ml-3" action="/dict" method="post" name="word" autocomplete="off">
+
+
+                    <form onSubmit={this.props.handleSubmit(this.onSubmit)} className="form-inline ml-3" action="/dict" method="post" name="word" autoComplete="off">
                         <Field name="word" component={this.renderInput} />
                     </form>
-                    
-                    
                     <div className='ml-auto'>
                         <GoogleAuth  />
                     </div>
@@ -59,10 +61,12 @@ class Header extends React.Component {
 }
 
 
-
+const afterSubmit = (result, dispatch) =>
+  dispatch(reset('wordCreate'));
 
 const formWrapped = reduxForm({
-    form: 'wordCreate'
+    form: 'wordCreate',
+    onSubmitSuccess: afterSubmit
 })(Header);
 
 
@@ -72,4 +76,5 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps, {createDict})(formWrapped)
+
+export default connect(mapStateToProps, {createGoogle, createBing})(formWrapped)

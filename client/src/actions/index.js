@@ -1,12 +1,13 @@
 import { SIGN_IN,
         SIGN_OUT,
-        CREATE_DICT,
         FETCH_DICTS,
         FETCH_DICT,
         DELETE_DICT,
         EDIT_DICT,
         CLEAR_DICT
 } from './types.js';
+
+
 import dict from '../apis/dictionary';
 import history from '../history';
 
@@ -24,23 +25,38 @@ export const signOut = () => {
 };
 
 
-export const createDict = formValues => async (dispatch, getState) => {
+export const createGoogle = formValues => async (dispatch, getState) => {
+    const {userId} = getState().auth;
+    if(userId && formValues.word) {
+        history.push('/words/show')
+        dispatch({type: CLEAR_DICT, payload: getState()})
+        const responseGoogle = await dict.post('/google',{...formValues, userId});
+        dispatch({type: 'CREATE_GOOGLE', payload: responseGoogle.data});
+        // Check the word is valid ?
+        if(responseGoogle.data.data) {
+            const _id =responseGoogle.data.data._id
+            formValues.word = responseGoogle.data.data.word
+            const responseOxford = await dict.post('/oxford',{...formValues, _id: _id});
+            dispatch({type: 'CREATE_GOOGLE', payload: responseOxford.data});
+        }
+    }
+};
+
+export const createBing = formValues => async (dispatch, getState) => {
     // Remember to createDict only have a userId attach to it
     const {userId} = getState().auth;
     if(userId) {
-        dispatch({type: CLEAR_DICT, payload: getState()})
-        history.push('/words/show')
-        const responseGoogle = await dict.post('/google',{...formValues, userId});
-        dispatch({type: CREATE_DICT, payload: responseGoogle.data});
-        const _id =responseGoogle.data.data._id
-        // Change the base Form from GoogleAPI
-        formValues.word = responseGoogle.data.data.word
-        const responseOxford = await dict.post('/oxford',{...formValues, _id: _id});
-        dispatch({type: CREATE_DICT, payload: responseOxford.data});
-        // const responseBing = await dict.post('/bing',{...formValues, _id: _id});
-        // dispatch({type: CREATE_DICT, payload: responseBing.data});
+        const responseBing = await dict.post('/bing',{...formValues});
+        dispatch({type: 'CREATE_IMAGE', payload: responseBing.data});
+        setTimeout( 
+            function(){ 
+                console.log("GETSTATE AFTER 1s ne:", getState());
+                const responseBing = dict.post('/bingimage',{img: getState().dict.image[0][0], _id: getState().dict.data._id});
+            }
+            ,1000)
     }
 };
+
 
 
 export const fetchDicts = (userId) => async dispatch => {
