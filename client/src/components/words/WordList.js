@@ -24,9 +24,9 @@ class WordList extends React.Component {
             <div className="row">
                 <div className= "col-sm-8">
                     <p className="text-success h4 font-weight-bold text-capitalize">{data.word}</p>
-                    <a class="headwordAudio rsbtn_play" onclick="this.firstElementChild.play();" data-behaviour="ga-event" data-value="Pronunciation audio">
+                    <a class="headwordAudio rsbtn_play" onclick="this.firstElementChild.play();" data-behaviour="ga-event" data-value="Pronunciation audio" href="/">
                         <audio src={data.aud}>
-                        </audio><img src="https://img.icons8.com/metro/26/000000/speaker.png" width="20px"/>
+                        </audio><img src="https://img.icons8.com/metro/26/000000/speaker.png" width="20px" alt="speaker"/>
                     </a>
                     <span className="h5"> [{data.pro}]</span>     
                     <p className="font-weight-bold h5 my-1 mt-2">{data.vi}</p>
@@ -46,7 +46,7 @@ class WordList extends React.Component {
                 <div className="col-sm-4">
                     {
                         data.img.map(eachImage => {
-                           return <img src={eachImage} style={{width:'95%'}}  className="d-inline fluid img-thumbnail"/>
+                           return <img src={eachImage} style={{width:'95%'}}  className="d-inline fluid img-thumbnail" alt="seachImage"/>
                         })
                     }
                     
@@ -72,7 +72,7 @@ class WordList extends React.Component {
         // console.log("From main Render",this.props)
         return (
             <div className="container">
-                <h2 className="mt-5"> What you have learned so far  </h2>
+                <h1 className="mt-5 mb-4 pb-5 text-primary" style={{fontFamily: 'Coiny, cursive'}}><u>{this.props.currentUserId ? 'What you have learned so far:': null}</u></h1>
                 <div className="mb-5">
                     {this.renderList()}
                 </div>

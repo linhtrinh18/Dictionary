@@ -28,7 +28,7 @@ router.post('/oxford', async (req, res)=>{
     try {
         const response = await oxfordApi(req.body.word)
         res.status(201).send({oxford: response});
-        // console.log(JSON.stringify(response.oxford))
+        console.log(JSON.stringify(response.oxford))
         const oxfordData = helper.renderEnglishMeaning(response)
         // console.log("oxfordData", JSON.stringify(oxfordData))
         const dict = await Dict.findByIdAndUpdate(req.body._id,{en: oxfordData.oxfordData, pro:oxfordData.phoneticSpelling, aud:oxfordData.audioFile }, {new: true})
@@ -60,7 +60,6 @@ router.post('/google', async (req, res) => {
 });
 
 router.post('/bing', async (req, res) => {
-    console.log("BING DONE")
     const response = await bingImage(req.body.word)
     // console.log(response)
     res.status(201).send(response);
@@ -76,7 +75,7 @@ router.post('/bing', async (req, res) => {
 
 
 router.post('/bingimage', async (req, res) => {
-    console.log("BING IMAGE", req.body)
+    // console.log("BING IMAGE", req.body)
     const _id = req.body.userId
     try {
         const dict = await Dict.findByIdAndUpdate(req.body._id,{img:[req.body.img]}, {new: true})

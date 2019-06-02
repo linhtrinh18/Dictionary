@@ -5,6 +5,8 @@ import { Field, reduxForm, reset } from 'redux-form'
 import { connect } from 'react-redux';
 import { createGoogle } from '../actions';
 import { createBing } from '../actions';
+import { UpdateMeaning } from '../actions';
+
 
 
 
@@ -12,6 +14,7 @@ class Header extends React.Component {
 
     onSubmit = (formValues) => {
         this.props.clearSubmit()
+        this.props.UpdateMeaning()
         this.props.createGoogle(formValues)
         this.props.createBing(formValues)
     }
@@ -77,4 +80,4 @@ const mapStateToProps = (state) => {
 
 
 
-export default connect(mapStateToProps, {createGoogle, createBing})(formWrapped)
+export default connect(mapStateToProps, {createGoogle, createBing, UpdateMeaning})(formWrapped)

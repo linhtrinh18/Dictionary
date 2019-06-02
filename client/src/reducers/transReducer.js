@@ -18,7 +18,7 @@ export default (state = {}, action) => {
         case DELETE_DICT:
             return _.omit(state, action.payload);
         case 'CLEAR_DICT':
-            console.log("OMIT DICT, " , _.omit(state, 'google', 'oxford', 'image') )
+            // console.log("OMIT DICT, " , _.omit(state, 'google', 'oxford', 'image') )
             return _.omit(state, 'google', 'oxford', 'image');
         default:
             return state;

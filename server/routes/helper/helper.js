@@ -25,6 +25,7 @@ module.exports.renderEnglishMeaning = (data) => {
         console.log("@@@@@@@@@", JSON.stringify(data))
         data.forEach(eachlexicalCategory =>{
             // console.log({cat : eachlexicalCategory.lexicalCategory, en: [eachlexicalCategory.entries[0].senses[0].definitions[0]]})
+            if((eachlexicalCategory.entries[0].senses[0].definitions || eachlexicalCategory.entries[0].senses[0].short_definitions)){
             oxfordData.push(
                 
                     {   cat : eachlexicalCategory.lexicalCategory ? eachlexicalCategory.lexicalCategory: null,
@@ -34,6 +35,7 @@ module.exports.renderEnglishMeaning = (data) => {
                         
                     }
                 )
+            }
                 if(eachlexicalCategory.pronunciations){
                     if(eachlexicalCategory.pronunciations[0].audioFile){
                         audioFile.push(eachlexicalCategory.pronunciations[0].audioFile)
