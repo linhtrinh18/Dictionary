@@ -1,20 +1,23 @@
 import React from 'react';
 import { connect} from 'react-redux';
-import { fetchDicts } from '../../actions'
+import { fetchDictPerPage } from '../../actions'
 import _ from 'lodash'
 import './styles/ShowStyle.css';
+import Pagination from './Pagination'
 
 class WordList extends React.Component {
-
-    componentDidUpdate(prevProps, prevState){
-        if(!_.isEqual(prevProps, this.props)) {
-            this.props.fetchDicts(this.props.currentUserId);
-        }
-    }
-    
-    componentDidMount (prevProps, prevState) {
-        if(!_.isEqual(prevProps, this.props)) {
-            this.props.fetchDicts(this.props.currentUserId);
+    constructor(props) {
+        super(props);
+        this.state = {
+            firstRender: true
+        };
+      }
+    componentDidUpdate() {
+        if(this.state.firstRender){
+            if(this.props.currentUserId){
+                this.props.fetchDictPerPage(this.props.currentUserId,1);
+                this.setState({firstRender : null})
+            }
         }
     }
     
@@ -70,13 +73,12 @@ class WordList extends React.Component {
                     }</div>
                     
                 </div>
-                <div key={Math.random()} className="col-sm-4">
+                <div className="col-sm-4">
                     {
                         data.img.map(eachImage => {
                            return <img key={eachImage} src={eachImage} style={{width:'95%'}}  className="d-inline fluid img-thumbnail" alt="seachImage"/>
                         })
                     }
-                    
                 </div>
             </div>
         );
@@ -99,9 +101,14 @@ class WordList extends React.Component {
         return (
             <div key={'container'} className="container">
                 <h1 key={'What you have learn so far'} className="mt-5 mb-4 pb-5 text-primary" style={{fontFamily: 'Coiny, cursive'}}><u>{this.props.currentUserId ? 'What you have learned so far:': null}</u></h1>
-                <div key={234234}  className="mb-5">
+                <Pagination/>
+                <div key={234234}  className="mb-2">
                     {this.renderList()}
                 </div>
+                <div className="float-right mb-5">
+                    <Pagination/>
+                </div>
+                
             </div>
         );
     }
@@ -117,4 +124,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps,{fetchDicts})(WordList);
+export default connect(mapStateToProps,{fetchDictPerPage})(WordList);

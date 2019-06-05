@@ -7,7 +7,6 @@ let {bingImage} = require('../apis/bingImage')
 let helper = require('./helper/helper')
 
 
-// Get all of the Dict
 router.get('/dict/:userId', async (req, res)=>{
     const userId = req.params.userId
     // console.log(req.params)
@@ -23,6 +22,22 @@ router.get('/dict/:userId', async (req, res)=>{
         res.status(400).send(e)
     }
 })
+
+router.get('/review-page/:page/:userId', async (req, res)=>{
+    const userId = req.params.userId
+    const currentPage= req.params.page
+    console.log(req.params)
+    try {
+        const dict = await Dict.paginate({userId}, { page: currentPage, limit: 5, sort: {$natural:-1 } })
+        res.send(dict)
+    } catch (e) {
+        console.log("error")
+        res.status(400).send(e)
+    }
+})
+
+
+
 
 router.post('/oxford', async (req, res)=>{
     try {
@@ -63,7 +78,6 @@ router.post('/update', async (req, res)=>{
     }
 })
 
-// FETCH DATA FROM GOOGLE
 router.post('/google', async (req, res) => {
     const response = await googleApi(req.body.word)
     const baseFrom = helper.checkBaseform(response.data)

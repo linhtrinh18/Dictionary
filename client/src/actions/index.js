@@ -17,14 +17,11 @@ export const signIn = (userId) => {
         payload: userId
     };
 };
-
 export const signOut = () => {
     return {
         type: SIGN_OUT,
     };
 };
-
-
 export const createGoogle = formValues => async (dispatch, getState) => {
     const {userId} = getState().auth;
     if(userId && formValues.word) {
@@ -45,7 +42,6 @@ export const createGoogle = formValues => async (dispatch, getState) => {
         }
     }
 };
-
 export const createBing = formValues => async (dispatch, getState) => {
     // Remember to createDict only have a userId attach to it
     const {userId} = getState().auth;
@@ -60,55 +56,43 @@ export const createBing = formValues => async (dispatch, getState) => {
             ,1000)
     }
 };
-
-
 export const showExample = (data) => async (dispatch, getState) => {
     dispatch({type: 'SHOW_VIET_MEAN', payload: data});
 }
-
-
 export const showImage = (image) => async (dispatch, getState) => {
     dispatch({type: 'SHOW_IMAGE', payload: image});
 }
-
 export const showEngMean = (data, lexicalCategory) => async (dispatch, getState) => {
     dispatch({type: 'SHOW_ENG_MEAN', payload: {cat: lexicalCategory, en:[data]}});
 }
-
 export const UpdateMeaning = () => async (dispatch, getState) => {
 }
-
 export const showEngExample = (data) => async (dispatch, getState) => {
     dispatch({type: 'SHOW_ENG_EXAMPLE', payload: data});
 }
-
 export const ShowMyExample = (data) => async (dispatch, getState) => {
     dispatch({type: 'SHOW_MY_EXAMPLE', payload: data});
 }
-
 export const removeEngMean = (data) => async (dispatch, getState) => {
     dispatch({type: 'REMOVE_ENG_MEAN', payload: data});
 }
-
-
 export const fetchDicts = (userId) => async dispatch => {
-    // console.log("my userId",userId)
     const response = await dict.get(`/dict/${userId}`);
-    // console.log("Response", response)
     dispatch({type: FETCH_DICTS, payload: response.data});
 }
+export const fetchDictPerPage = (userId, page) => async dispatch => {
+    const response = await dict.get(`/review-page/${page}/${userId}`);
+    dispatch({type: 'FETCH_DICTS_PER_PAGE', payload: {data: response.data.docs, total: response.data.total, page:Number(response.data.page), pages: response.data.pages}});
+}                                                                            
 
-export const fetchDict = (_id) => async dispatch => {
-    // console.log("FETCH DICT", _id)
-    const response = await dict.get(`/dict/${_id}`);
-    dispatch({type: FETCH_DICT, payload: response.data});
+export const fetchDict = (userId) => async dispatch => {
+    const response = await dict.get(`/dict/${userId}`);
+    dispatch({type: FETCH_DICTS, payload: response.data});
 }
-
 export const editDict = (_id, formValues) => async dispatch => {
     const response = await dict.put(`/dict/${_id}`, formValues);
     dispatch({type: EDIT_DICT, payload: response.data});
 };
-
 export const deleteDict = (_id) => async dispatch => {
     await dict.put(`/dict/${_id}`);
     dispatch({type: DELETE_DICT, payload: _id});
