@@ -22,7 +22,7 @@ module.exports.renderEnglishMeaning = (data) => {
         const oxfordData = [];
         const audioFile = [];
         const phoneticSpelling = [];
-        console.log("@@@@@@@@@", JSON.stringify(data))
+        // console.log("@@@@@@@@@", JSON.stringify(data))
         data.forEach(eachlexicalCategory =>{
             // console.log({cat : eachlexicalCategory.lexicalCategory, en: [eachlexicalCategory.entries[0].senses[0].definitions[0]]})
             if((eachlexicalCategory.entries[0].senses[0].definitions || eachlexicalCategory.entries[0].senses[0].short_definitions)){
@@ -47,7 +47,7 @@ module.exports.renderEnglishMeaning = (data) => {
         })
         // console.log('@@@@@@@@@', JSON.stringify(oxfordData))
         
-        console.log("AudioFile: ", phoneticSpelling)
+        // console.log("AudioFile: ", phoneticSpelling)
         return {oxfordData: oxfordData, audioFile:audioFile[0], phoneticSpelling:phoneticSpelling[0]}
     }
 }

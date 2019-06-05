@@ -41,15 +41,6 @@ class Header extends React.Component {
                     <span className="navbar-toggler-icon"></span>
                   </button>
                   <div className="collapse navbar-collapse nav-pills" id="myNav">
-                    <ul className="navbar-nav">
-                      <li className="nav-item">
-                        <Link to="/words/new" className="nav-link">
-                            New
-                        </Link>
-                      </li>
-                    </ul>
-
-
                     <form onSubmit={this.props.handleSubmit(this.onSubmit)} className="form-inline ml-3" action="/dict" method="post" name="word" autoComplete="off">
                         <Field name="word" component={this.renderInput} />
                     </form>

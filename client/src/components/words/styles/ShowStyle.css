@@ -9,6 +9,7 @@ p {
   height: 150px;
 }
 
+
 .image-display{
   height: 150px;
   object-fit: cover;
@@ -16,6 +17,21 @@ p {
   min-width: 100%;
   vertical-align: bottom;
 }
+
+.image-display-icon{
+  height: 60px;
+  object-fit: cover;
+  max-width: 30%;
+  min-width: 30%;
+  /*vertical-align: bottom;*/
+}
+
+.image-border-icon{
+  flex-grow: 1;
+  margin: 2px;
+  height: 60px;
+}
+
 
 section{
   display: flex;
@@ -36,4 +52,16 @@ section{
 
 hr {
 	margin:8px 0 8px 0;
+}
+
+.btn-group-xs > .btn, .btn-xs {
+  padding: .25rem .4rem;
+  font-size: .7rem;
+  line-height: .5;
+  border-radius: .2rem;
+}
+
+.bother-thick {
+	border: 2px solid red;
+	border-radius: 3px;
 }

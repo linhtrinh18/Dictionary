@@ -38,6 +38,31 @@ router.post('/oxford', async (req, res)=>{
     }
 })
 
+router.post('/update', async (req, res)=>{
+    console.log("hit Update route")
+    try {
+        console.log("BODY:", JSON.stringify(req.body.data))
+        const dict = await Dict.findById(req.body.data._id)
+        // console.log("DICT FIND", dict)
+        let updates = Object.keys(req.body.data)
+        // console.log("UPDATES THESE ITEMS: ", updates)
+        updates.forEach((update)=> {
+            // dict[update] = data[update]
+            // console.log("dict[update]",update ,":", dict[update])
+            if(Array.isArray(dict[update])){
+                // console.log("Is Array: ", dict[update], Array.isArray(dict[update]));
+                // console.log("IMPLEMENT")
+                dict[update] = dict[update].concat(req.body.data[update])
+            }
+        })
+        await dict.save()
+        res.send("Successfully update")
+        // console.log("DICT AFTER MODIFY", dict)
+    } catch (e) {
+        res.status(400).send(e)
+    }
+})
+
 // FETCH DATA FROM GOOGLE
 router.post('/google', async (req, res) => {
     const response = await googleApi(req.body.word)

@@ -2,8 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 // import {renderGoogle, renderOxford, renderImage, test} from './helper'
 import './styles/ShowStyle.css';
-import { showExample, showEngMean, showEngExample , ShowMyExample } from '../../actions'
-
+import { showExample, showEngMean, showEngExample , removeEngMean, ShowMyExample, UpdateMeaning, showImage } from '../../actions'
 
 class WordShow extends React.Component {
     constructor(props) {
@@ -16,18 +15,21 @@ class WordShow extends React.Component {
         this.state = {
             myExample:'',
             engMeanCheckBox: false,
-            opacity: 1
+            opacity: 0,
+            index: null,
+            def : null,
+            display: 'none',
+            img:null
         }
     }
-    
     render() {
         if (!(Object.keys(this.props.showData.dict).length === 0)) {
             return (
                 <div className = "mx-5 mt-4">
                     <div className="row">
-                        <div className="google col-md-2 mt-3"> {this.renderGoogle(this.props.showData.dict.google)}</div>
-                        <div className="oxford col-md-7" style={{lineHeight: 'normal'}}> {this.renderOxford(this.props.showData.dict.oxford)} </div>
-                        <div className="border rounded col-md-3 mt-3"> {this.renderSaveSection(this.props.showData)}</div>
+                        <div key={'renderGoolge'} className="google col-md-2 mt-3"> {this.renderGoogle(this.props.showData.dict.google)}</div>
+                        <div key={'renderOxford'} className="oxford col-md-7" style={{lineHeight: 'normal'}}> {this.renderOxford(this.props.showData.dict.oxford)} </div>
+                        <div key={'renderBing'} className="border rounded col-md-3 mt-3"> {this.renderSaveSection(this.props.showData)}</div>
                     </div>
                     <section className="mt-3">
                             {this.renderImage(this.props.showData.dict.image)}
@@ -39,76 +41,114 @@ class WordShow extends React.Component {
             return <div></div>
         }
     }
-    
     onFormSubmitExample = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        this.myExample.push(this.state.myExample)
-        console.log("TARGET", this.state.myExample)
-        this.props.ShowMyExample(this.myExample)
+        this.props.ShowMyExample(this.state.myExample)
         this.setState({myExample: ''});
     }
-    
     handleExampleChange = (e) => {
         this.setState({myExample: e.target.value});
     }
-    
-    
+    removeMyExample = (eachExample) => {
+        this.props.ShowMyExample(eachExample)
+    }
     renderShowMyExample = (data) => {
-        if(data.myExample){
-            return data.myExample.map(eachExample => {
-                return <p className="font-italic text-danger">"{eachExample}"</p>
+        if(data.yex){
+            return data.yex.map((eachExample,index) => {
+                return (
+                    <div key={index} className="d-flex justify-content-between bd-highlight">
+                        <div><p key={eachExample} className="font-italic text-danger">"{eachExample}"</p></div>
+                        <div className="text-danger"><button onClick={e => this.removeMyExample(eachExample)}className="btn btn-danger btn-xs">X</button></div>
+                     </div>    
+                );
             })
         }
+        
     }
     renderShowVietMeaning = (data) => {
-        if(data.vietMean) {
-            return data.vietMean.map(eachVietMean => {
-                return <span>{eachVietMean},</span>
-            })
+        if(data.vi) {
+            return data.vi.map((eachVietMean,index) => {
+                return <span key={index}>, {eachVietMean}</span>
+                })
+            }
+        
+    }
+    renderFirstVietMeaning = (data) => {
+        if(data.data) {
+            return <span>{data.data.vi[0]}</span>
         }
     }
-    
+    removeEngmean = (eachEngMean) => {
+        this.props.removeEngMean(eachEngMean)
+    }
     renderShowEngMeaning = (data) => {
-        if(data.engMean) {
-            return data.engMean.map(eachEngMean => {
-                return <p className="text-primary">{eachEngMean},</p>
+        if(data.en) {
+            return data.en.map((eachEngMean, index) => {
+                return (
+                    <div key={index} className="d-flex justify-content-between bd-highlight">
+                        <div><p className="text-primary">{eachEngMean.en[0]}</p></div>
+                        <div className="text-danger"><button onClick={e => this.removeEngmean(eachEngMean)} className="btn btn-danger btn-xs">X</button></div>
+                     </div>  
+                );
             })
         }
     }
-    
     renderShowExample = (data) => {
-        if (data.engExample){
-            return data.engExample.map(eachEngExample => {
-                return <p className="font-italic text-danger">"{eachEngExample}"</p>
-            })
+        if(data){
+            if (data.ex){
+                return data.ex.map((eachEngExample,index) => {
+                    return (
+                    <div key={index} className="d-flex justify-content-between bd-highlight">
+                        <div><p className="font-italic text-danger">"{eachEngExample}"</p></div>
+                        <div className="text-danger"><button onClick={e => this.insertEngExample(eachEngExample)} className="btn btn-danger btn-xs">X</button></div>
+                     </div>  
+                    );
+                })
+            }
         }
+    }
+    renderShowpImage = (data) => {
+        let image = data.img
+    if(image) {
+            return image.map((eachimage,index) => {
+                return (
+                    <div key={index} className="image-border-icon d-inline border rounded" onClick={e => this.removeSaveImage(eachimage)}>
+                        <img src={eachimage} key={eachimage} className='image-display-icon d-inline' alt="from-bing"/>
+                    </div>                
+                );
+            })
+        } else {
+            return null
+        }
+    
+    }
+    removeSaveImage = (image) => {
+        this.props.showImage(image)
     }
     renderSaveSection(data) {
-        console.log("DATA", data)
         return (
             <div>
-                <form onSubmit={this.onFormSubmitExample}>
+                <form className="pt-2" onSubmit={this.onFormSubmitExample}>
                     <input onChange={this.handleExampleChange} value={this.state.myExample} type="text" className="your-example mt-2" placeholder="Your example here..."/>
                 </form>
                 <hr/>
                 <p className="display-4">{data.dict.data.word}</p>
-                <div>{this.renderShowVietMeaning(data.post)}</div>
+                <div className="mt-2 text-success h4"><span>{this.renderFirstVietMeaning(data.dict)}</span>{this.renderShowVietMeaning(data.post)}</div>
                 <hr/>
                 <div>{this.renderShowMyExample(data.post)}</div>
                 <div>{this.renderShowExample(data.post)}</div>
                 <div>{this.renderShowEngMeaning(data.post)}</div>
+                <div>{this.renderShowpImage(data.post)}</div>
             </div>)
     }
-    
     //-------------------------Helper Method-------------------------------------//
     renderGoogle = (google, googleClickMe) => {
-    // console.log("GOOGLE SENTENCES", google)
         if(google) {
                 if(google.sentences) {
                     return (
                             <div>
-                                <p className="font-weight-bold h1">{google.sentences[0].trans}</p>
+                                <p key={google.sentences[0].trans} className="font-weight-bold h1">{google.sentences[0].trans}</p>
                                 <div>
                                     {this.renderGoogleElement(google.dict)}
                                 </div>
@@ -122,25 +162,22 @@ class WordShow extends React.Component {
             }
         }
     insertVietmean (vietMean) {
-        // Check if the length of the last items of the data is the same ==> Delete the last one
-        this.vietMeaning.push(vietMean)
-        console.log("!!!!", this.vietMeaning)
-        this.props.showExample(this.props.showData.dict.data._id, this.vietMeaning)
+        this.props.showExample(vietMean)
     }
     renderGoogleElement = (dicts) => {
         if(dicts){
-            return dicts.map(dict => {
+            return dicts.map((dict,index1) => {
                 return (
-                    <div>
+                    <div key={index1}>
                         <p key={Math.floor(Math.random() * 1000)} className="text-uppercase text-success mt-2">{dict.pos}</p>
-                        {dict.entry.map(vietMean => {
+                        {dict.entry.map((vietMean,index) => {
                               return ( 
-                                    <div>
-                                        <div className="custom-control custom-checkbox" >
-                                            <input type="checkbox" className="custom-control-input checkboxHide" id={vietMean.word} onClick={(e) => this.insertVietmean(vietMean.word)}/>
-                                            <label className="custom-control-label font-weight-bold showCheckBox" for={vietMean.word}>{vietMean.word}</label>
+                                    <div key={index}>
+                                        <div key={index} className="custom-control custom-checkbox" >
+                                            <input key={`${vietMean.word}input`} type="checkbox" className="custom-control-input checkboxHide" id={vietMean.word} onClick={(e) => this.insertVietmean(vietMean.word)}/>
+                                            <label key={`${vietMean.word}label`}className="custom-control-label font-weight-bold showCheckBox" htmlFor={vietMean.word}>{vietMean.word}</label>
                                         </div>
-                                        <p key={Math.floor(Math.random() * 1000)} className="pl-3 font-italic">"{vietMean.reverse_translation.map(each => {return `${each} `})}"</p>
+                                        <p key={`${vietMean.word}p`} className="pl-3 font-italic">"{vietMean.reverse_translation.map(each => {return `${each} `})}"</p>
                                     </div>
                               );
                         })}
@@ -151,18 +188,21 @@ class WordShow extends React.Component {
             return null
         }
     } 
+    playSound = (audio) => {
+       const sound = new Audio(audio)
+       sound.play();
+    }
     renderOxford = (oxford) => {
-    // console.log("OXFORD DATA", JSON.stringify(oxford))
     if(oxford) {
         return (
-                <div className="border-left">
-                    <div className="ml-2">
+                <div key={'oxford'} className="border-left">
+                    <div key={oxford[0].text} className="ml-2">
                         <p className="display-4">{oxford[0].text}</p>
-                        <a className="headwordAudio rsbtn_play" data-behaviour="ga-event" data-value="Pronunciation audio" href="/">
-                            <audio src={this.renderOxfordAudio(oxford).audio} autoPlay>
+                        <span onClick={e => this.playSound(this.renderOxfordAudio(oxford).audio) }>
+                            <audio key={this.renderOxfordAudio(oxford).audio} src={this.renderOxfordAudio(oxford).audio} autoPlay>
                             </audio><img src="https://img.icons8.com/metro/26/000000/speaker.png" alt="speaker" width="20px"/>
-                        </a> <span className="h5"> [{this.renderOxfordAudio(oxford).phonetic}]</span>
-                        <div className="mt-2">{this.renderOxfordBody(oxford)}</div>
+                        </span> <span className="h5"> [{this.renderOxfordAudio(oxford).phonetic}]</span>
+                        <div key={this.renderOxfordBody(oxford)} className="mt-2">{this.renderOxfordBody(oxford)}</div>
                     </div>
                 </div>
         );
@@ -185,13 +225,12 @@ class WordShow extends React.Component {
     return {audio: audiolink[0], phonetic: phoneticSpelling[0] }
 }
     renderOxfordBody = (oxford) => {
-    // console.log("oxford", oxford)
         if(oxford) {
-        return oxford.map((eachOxford) => {
+        return oxford.map((eachOxford, index) => {
                 return (
-                    <div>
-                        <p id="lexicalCategory" className="text-success text-uppercase h5">{eachOxford.lexicalCategory}</p>
-                        <div>{this.renderMeaningExample(eachOxford)}</div>
+                    <div key={index}>
+                        <p key={eachOxford.lexicalCategory} id="lexicalCategory" className="text-success text-uppercase h5 mt-3">{eachOxford.lexicalCategory}</p>
+                        <div key={eachOxford}> {this.renderMeaningExample(eachOxford, eachOxford.lexicalCategory)}</div>
                     </div>
                 );
             });
@@ -201,72 +240,71 @@ class WordShow extends React.Component {
             return null
         }
     }
-    renderMeaningExample = (eachOxford) => {
+    renderMeaningExample = (eachOxford, lexicalCategory) => {
     if (eachOxford) {
-        // console.log("eachOxford", eachOxford)
         return eachOxford.entries.map((entries, index1) => {
-            if (entries.senses) {
-                return entries.senses.map((sense, index2) => {
-                    return (
-                        <div>
-                            <div id="mainDefinition">{this.renderMainDefinition(sense, index2)}</div>
-                            <p id="mainExample">{this.renderMainExample(sense)}</p>
-                            <div id="renderSubMean">{this.renderSubMean(sense, index2)}</div>
-                        </div>
-                    );
-                })
-            } else {
-                return null
-            }
-        })
-    } else {
-        return null
+                if (entries.senses) {
+                    return entries.senses.map((sense, index2) => {
+                        return (
+                            <div key={index2}>
+                                <div id="mainDefinition">{this.renderMainDefinition(sense, index2, lexicalCategory)}</div>
+                                <div id="mainExample">{this.renderMainExample(sense)}</div>
+                                <div id="renderSubMean">{this.renderSubMean(sense, index2 ,lexicalCategory)}</div>
+                            </div>
+                        );
+                    })
+                } else {
+                    return null
+                }
+            })
+        } else {
+            return null
+        }
     }
-}
-    mouseEnter = (e) => {
-        // console.log('mouse enter')
-        this.setState({opacity: 0.3})
-        // console.log(e.target)
+    mouseEnter = (definition ) => {
+        this.setState({
+            def: definition
+        })
     }
     mouseLeave = () => {
-        // console.log('mouse leave')
-        this.setState({opacity: 1})
+        this.setState({def: null})
     }
-    insertEngmean = (engMeaning) => {
-        this.engMeaning.push(engMeaning)
-        console.log("!!!!", this.engMeaning)
-        this.props.showEngMean(this.props.showData.dict.data._id, this.engMeaning)
+    insertEngmean = (engMeaning, lexicalCategory) => {
+        this.props.showEngMean(engMeaning, lexicalCategory)
     }
-    renderMainDefinition = (sense, index) => {
-        // onMouseEnter={this.mouseEnter} onMouseLeave={this.mouseLeave}
+    renderMainDefinition = (sense, index , lexicalCategory) => {
         if (sense.definitions) {
             return (
-                <div>
-                    <p value={sense.definitions[0]}  id="mainExample" className="font-weight-bold">{index+1}. {sense.definitions[0]}
-                        <input style={{opacity: this.state.opacity}} type="checkbox" onClick={(e) => this.insertEngmean(sense.definitions[0])} />
-                    </p>
-                </div>
+                    <div key={index} className="d-inline pr-5" onMouseEnter={e => {this.mouseEnter(sense.definitions[0])}} onMouseLeave={this.mouseLeave}>
+                        <p key={sense.definitions[0]} className="font-weight-bold d-inline" value={sense.definitions[0]}  id="mainExample">{index+1}. {sense.definitions[0]}</p>
+                        <button 
+                            className="btn btn-success btn-xs ml-2 d-inline"
+                            style={{visibility: this.state.def === sense.definitions[0] ? index !== 0?  'visible' : 'hidden' : 'hidden'}}
+                            onClick={(e) => this.insertEngmean(sense.definitions[0], lexicalCategory)}>
+                                Save
+                        </button>
+                    </div>
             );
         } else {
             return null
         }
     }
     insertEngExample = (engExample) => {
-        this.engExample.push(engExample)
-        // console.log("!!!!ENG EXAMPLE", this.engExample)
-        this.props.showEngExample(this.props.showData.dict.data._id, this.engExample)
+        this.props.showEngExample(engExample)
     }
     renderMainExample = (sense) => {
-    // console.log("sense", sense)
     if (sense) {
             if (sense.examples){
-                return sense.examples.map(example => {
-                    // console.log("example", example)
+                return sense.examples.map((example,index) => {
                     return ( 
-                        <div>
-                        <p id="mainExample" className="font-italic ml-2">"{example.text}"
-                            <input type="checkbox" onClick={(e) => this.insertEngExample(example.text)}/>
-                        </p>
+                        <div key={index} className="pr-5" onMouseEnter={e => {this.mouseEnter(example.text)}} onMouseLeave={this.mouseLeave}>
+                            <p id="mainExample" className="font-italic ml-2 d-inline">"{example.text}"</p>
+                            <button 
+                                className="btn btn-success btn-xs ml-2 d-inline" 
+                                style={{visibility: this.state.def === example.text ? 'visible' : 'hidden' }}
+                                onClick={(e) => this.insertEngExample(example.text)}>
+                                    Save
+                            </button>
                         
                         </div>
                         );
@@ -278,16 +316,24 @@ class WordShow extends React.Component {
             return null
         }
     }
-    renderSubMean = (sense, index ) => {
+    renderSubMean = (sense, index, lexicalCategory ) => {
     if (sense){
             if (sense.subsenses){
                 return sense.subsenses.map((subsense, submeanIndex) => {
                     if(subsense) {
                         return (
-                            <div>
-                                <p id="subMeaning" className="ml-3 font-weight-bold">{index+1}.{submeanIndex+1} {this.renderSubMeaning(subsense)}
-                                    <input type="checkbox" onClick={(e) => this.insertEngmean(this.renderSubMeaning(subsense))}/>
-                                </p>
+                            <div key={submeanIndex}>
+                                <div className="d-inline pr-5" onMouseEnter={e => {this.mouseEnter(this.renderSubMeaning(subsense))}} onMouseLeave={this.mouseLeave}>
+                                    <p id="subMeaning" className="ml-3 font-weight-bold d-inline">{index+1}.{submeanIndex+1} {this.renderSubMeaning(subsense)}
+                                    </p>
+                                    <button 
+                                        className="btn btn-success btn-xs ml-2 d-inline" 
+                                        style={{visibility: this.state.def === this.renderSubMeaning(subsense) ? 'visible' : 'hidden' }}
+                                        onClick={(e) => this.insertEngmean(this.renderSubMeaning(subsense),lexicalCategory)}>
+                                            Save
+                                    </button>
+
+                                </div>
                                 <div id="subExamples">{this.renderSubExample(subsense)}</div>
                             </div>
                         );
@@ -305,7 +351,6 @@ class WordShow extends React.Component {
     renderSubMeaning = (subsense) => {
         if(subsense) {
             if(subsense.definitions) {
-                // console.log("subsense.definitions", subsense.definitions)
                     return subsense.definitions[0]
             } else {
                 if (subsense.short_definitions){
@@ -322,11 +367,19 @@ class WordShow extends React.Component {
     renderSubExample = (subsense) => {
         if(subsense){
             if(subsense.examples){
-                return subsense.examples.map(example => {
-                    // console.log("SUB EXAMPLE" , example )
-                    return <p id="subExamples" className="ml-5 font-italic">"{example.text}"
-                        <input type="checkbox" onClick={(e) => this.insertEngExample(example.text)}/>
-                    </p>
+                return subsense.examples.map((example,index3) => {
+                    return (
+                    <div key={index3} className="pr-5" onMouseEnter={e => {this.mouseEnter(example.text)}} onMouseLeave={this.mouseLeave}>
+                        <p id="subExamples" className="ml-5 font-italic d-inline">"{example.text}"
+                        </p>
+                        <button 
+                            className="btn btn-success btn-xs ml-2 d-inline" 
+                            style={{visibility: this.state.def === example.text ? 'visible' : 'hidden' }}
+                            onClick={(e) => this.insertEngExample(example.text)}>
+                                Save
+                        </button>
+                    </div>
+                    );
                 })
             } else {
                 return null
@@ -336,27 +389,28 @@ class WordShow extends React.Component {
             return null
         }
     }
-    renderImage = (bing) => {
-    // console.log("BING", bing)
-    if(bing) {
-        return bing.map(eachimage => {
-            return (
-                <div className="image-border">
-                    <img src={eachimage[0]} className="image-display" alt="from-bing"/>
-                 </div>                
-            );
-        })
-    } else {
-        return null
+    selectImage = (eachimage) => {
+        this.setState({img: eachimage})
+        this.props.showImage(eachimage)
     }
-}
-    
-}
+    renderImage = (bing) => {
+    if(bing) {
+            return bing.map((eachimage,index) => {
+                return (
+                    <div key={index} className="image-border" onClick={e => this.selectImage(eachimage[0])}>
+                        <img src={eachimage[0]} className={this.state.img === eachimage[0] ? 'image-display bother-thick' : 'image-display'} alt="from-bing"/>
+                    </div>                
+                );
+            })
+        } else {
+            return null
+        }
+    }
+    }
 
 const mapStateToProps = (state) => {
-    // console.log("ShowState: ",  state)
     return {showData: state}
 }
 
 
-export default connect(mapStateToProps, {showExample, showEngMean, showEngExample, ShowMyExample})(WordShow);
+export default connect(mapStateToProps, {removeEngMean,showExample, showEngMean, showEngExample, ShowMyExample, UpdateMeaning, showImage})(WordShow);

@@ -29,7 +29,11 @@ export const createGoogle = formValues => async (dispatch, getState) => {
     const {userId} = getState().auth;
     if(userId && formValues.word) {
         history.push('/words/show')
+        if(getState().dict.data){
+            dict.post('/update', {data:{...getState().post, _id: getState().dict.data._id}})
+        }
         dispatch({type: CLEAR_DICT, payload: getState()})
+        dispatch({type: 'CLEAR_POST', payload: null})
         const responseGoogle = await dict.post('/google',{...formValues, userId});
         dispatch({type: 'CREATE_GOOGLE', payload: responseGoogle.data});
         // Check the word is valid ?
@@ -58,28 +62,34 @@ export const createBing = formValues => async (dispatch, getState) => {
 };
 
 
-export const showExample = (_id, data) => async (dispatch, getState) => {
-    // console.log("_id", _id)
-    // console.log("Data", data)
-    // dispatch({type: 'CLEAR_POST', payload: getState()})
-    dispatch({type: 'SHOW_VIET_MEAN', payload: {_id: _id, vietMean: data}});
+export const showExample = (data) => async (dispatch, getState) => {
+    dispatch({type: 'SHOW_VIET_MEAN', payload: data});
 }
 
-export const showEngMean = (_id, data) => async (dispatch, getState) => {
-    dispatch({type: 'SHOW_ENG_MEAN', payload: {_id: _id, engMean: data}});
+
+export const showImage = (image) => async (dispatch, getState) => {
+    dispatch({type: 'SHOW_IMAGE', payload: image});
+}
+
+export const showEngMean = (data, lexicalCategory) => async (dispatch, getState) => {
+    dispatch({type: 'SHOW_ENG_MEAN', payload: {cat: lexicalCategory, en:[data]}});
 }
 
 export const UpdateMeaning = () => async (dispatch, getState) => {
-    console.log("UPDATE MEANING", getState())
 }
 
-export const showEngExample = (_id, data) => async (dispatch, getState) => {
-    dispatch({type: 'SHOW_ENG_EXAMPLE', payload: {_id: _id, engExample: data}});
+export const showEngExample = (data) => async (dispatch, getState) => {
+    dispatch({type: 'SHOW_ENG_EXAMPLE', payload: data});
 }
 
 export const ShowMyExample = (data) => async (dispatch, getState) => {
-    dispatch({type: 'SHOW_MY_EXAMPLE', payload: {myExample: data}});
+    dispatch({type: 'SHOW_MY_EXAMPLE', payload: data});
 }
+
+export const removeEngMean = (data) => async (dispatch, getState) => {
+    dispatch({type: 'REMOVE_ENG_MEAN', payload: data});
+}
+
 
 export const fetchDicts = (userId) => async dispatch => {
     // console.log("my userId",userId)

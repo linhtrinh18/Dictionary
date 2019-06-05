@@ -14,7 +14,7 @@ export default (state = {}, action) => {
         case 'CREATE_IMAGE':
             return Object.assign({}, state, action.payload);
         case EDIT_DICT:
-            return {...state, [action.payload._id]: action.payload};
+            return {...state, [action.payload._id]: action.payload.mex};
         case DELETE_DICT:
             return _.omit(state, action.payload);
         case 'CLEAR_DICT':
