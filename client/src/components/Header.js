@@ -16,7 +16,6 @@ class Header extends React.Component {
         this.props.clearSubmit()
         this.props.UpdateMeaning()
         this.props.createGoogle(formValues)
-        this.props.createBing(formValues)
     }
 
     renderInput = ({input, label, meta}) => {

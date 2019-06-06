@@ -4,6 +4,8 @@ let Dict = require("../models/dictionary");
 let {oxfordApi} = require('../apis/oxford')
 let {googleApi} = require('../apis/googleTrans')
 let {bingImage} = require('../apis/bingImage')
+let {spellCheck} = require('../apis/spellCheck')
+
 let helper = require('./helper/helper')
 
 
@@ -43,11 +45,9 @@ router.post('/oxford', async (req, res)=>{
     try {
         const response = await oxfordApi(req.body.word)
         res.status(201).send({oxford: response});
-        console.log(JSON.stringify(response.oxford))
+        console.log(JSON.stringify(response))
         const oxfordData = helper.renderEnglishMeaning(response)
-        // console.log("oxfordData", JSON.stringify(oxfordData))
         const dict = await Dict.findByIdAndUpdate(req.body._id,{en: oxfordData.oxfordData, pro:oxfordData.phoneticSpelling, aud:oxfordData.audioFile }, {new: true})
-        // console.log("DICT NE,", dict)
     }catch (e) {
         res.status(400).send(e)
     }
@@ -58,15 +58,9 @@ router.post('/update', async (req, res)=>{
     try {
         console.log("BODY:", JSON.stringify(req.body.data))
         const dict = await Dict.findById(req.body.data._id)
-        // console.log("DICT FIND", dict)
         let updates = Object.keys(req.body.data)
-        // console.log("UPDATES THESE ITEMS: ", updates)
         updates.forEach((update)=> {
-            // dict[update] = data[update]
-            // console.log("dict[update]",update ,":", dict[update])
             if(Array.isArray(dict[update])){
-                // console.log("Is Array: ", dict[update], Array.isArray(dict[update]));
-                // console.log("IMPLEMENT")
                 dict[update] = dict[update].concat(req.body.data[update])
             }
         })
@@ -93,8 +87,9 @@ router.post('/google', async (req, res) => {
             res.status(400).send(e)
         }
     } else {
-    //Send the unvalid word back to client
-    res.status(201).send({google:req.body.word});
+    console.log("spellCheck(req.body.word)", spellCheck(req.body.word))
+    const spellCheckResonse = await spellCheck(req.body.word)
+    res.status(201).send({google: spellCheckResonse});
     }
 });
 

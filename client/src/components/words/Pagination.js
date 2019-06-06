@@ -10,7 +10,7 @@ class Pagination extends React.Component {
     }
     
     render () {
-        if(this.props.currentUserId){
+        if(this.props.currentUserId && this.props.total > 0){
             return (
                <div>
                     <nav>

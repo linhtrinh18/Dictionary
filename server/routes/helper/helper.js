@@ -28,7 +28,7 @@ module.exports.renderEnglishMeaning = (data) => {
             if((eachlexicalCategory.entries[0].senses[0].definitions || eachlexicalCategory.entries[0].senses[0].short_definitions)){
             oxfordData.push(
                 
-                    {   cat : eachlexicalCategory.lexicalCategory ? eachlexicalCategory.lexicalCategory: null,
+                    {   cat : eachlexicalCategory.lexicalCategory ? eachlexicalCategory.lexicalCategory.text : null,
                         en: [
                                 eachlexicalCategory.entries[0].senses[0].definitions ? eachlexicalCategory.entries[0].senses[0].definitions[0] : eachlexicalCategory.entries[0].senses[0].short_definitions[0]
                             ]
@@ -37,12 +37,17 @@ module.exports.renderEnglishMeaning = (data) => {
                 )
             }
                 if(eachlexicalCategory.pronunciations){
-                    if(eachlexicalCategory.pronunciations[0].audioFile){
-                        audioFile.push(eachlexicalCategory.pronunciations[0].audioFile)
-                    }
-                    if(eachlexicalCategory.pronunciations[0].phoneticSpelling){
-                        phoneticSpelling.push(eachlexicalCategory.pronunciations[0].phoneticSpelling)
-                    }
+                    
+                    eachlexicalCategory.pronunciations.map(eachPhonetic =>{
+                        if(eachPhonetic.audioFile){
+                            audioFile.push(eachlexicalCategory.pronunciations[0].audioFile)
+                        }
+                        if(eachPhonetic.phoneticSpelling && eachPhonetic.phoneticNotation === 'IPA'){
+                            phoneticSpelling.push(eachPhonetic.phoneticSpelling)
+                        }
+                    })
+                    
+
                 }
         })
         // console.log('@@@@@@@@@', JSON.stringify(oxfordData))

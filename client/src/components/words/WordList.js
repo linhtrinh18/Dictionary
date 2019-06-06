@@ -20,12 +20,13 @@ class WordList extends React.Component {
             }
         }
     }
-    
+    componentDidMount() {
+        this.props.fetchDictPerPage(this.props.currentUserId,1);
+    }
     playSound = (audio) => {
        const sound = new Audio(audio)
        sound.play();
     }
-    
     renderMeaning(data) {
         return (
             <div className="row">
@@ -83,8 +84,6 @@ class WordList extends React.Component {
             </div>
         );
     }
-    
-    
     renderList() {
         return this.props.dicts.map((dict,index) => {
             if(dict.userId === this.props.currentUserId){
@@ -102,7 +101,7 @@ class WordList extends React.Component {
             <div key={'container'} className="container">
                 <h1 key={'What you have learn so far'} className="mt-5 mb-4 pb-5 text-primary" style={{fontFamily: 'Coiny, cursive'}}><u>{this.props.currentUserId ? 'What you have learned so far:': null}</u></h1>
                 <Pagination/>
-                <div key={234234}  className="mb-2">
+                <div key={'renderList'}  className="mb-2">
                     {this.renderList()}
                 </div>
                 <div className="float-right mb-5">

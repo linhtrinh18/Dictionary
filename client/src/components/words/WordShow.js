@@ -127,6 +127,7 @@ class WordShow extends React.Component {
         this.props.showImage(image)
     }
     renderSaveSection(data) {
+        if(data.dict.data){
         return (
             <div>
                 <form className="pt-2" onSubmit={this.onFormSubmitExample}>
@@ -141,6 +142,7 @@ class WordShow extends React.Component {
                 <div>{this.renderShowEngMeaning(data.post)}</div>
                 <div>{this.renderShowpImage(data.post)}</div>
             </div>)
+        }
     }
     //-------------------------Helper Method-------------------------------------//
     renderGoogle = (google, googleClickMe) => {
@@ -217,7 +219,9 @@ class WordShow extends React.Component {
         if(pro1.pronunciations){
             pro1.pronunciations.forEach(pro2 => {
                 audiolink.push(pro2.audioFile);
-                phoneticSpelling.push(pro2.phoneticSpelling);
+                if(pro2.phoneticSpelling && pro2.phoneticNotation === 'IPA'){
+                    phoneticSpelling.push(pro2.phoneticSpelling);
+                }
             });
         }
         return null
@@ -229,7 +233,7 @@ class WordShow extends React.Component {
         return oxford.map((eachOxford, index) => {
                 return (
                     <div key={index}>
-                        <p key={eachOxford.lexicalCategory} id="lexicalCategory" className="text-success text-uppercase h5 mt-3">{eachOxford.lexicalCategory}</p>
+                        <p key={eachOxford.lexicalCategory} id="lexicalCategory" className="text-success text-uppercase h5 mt-3">{eachOxford.lexicalCategory.text}</p>
                         <div key={eachOxford}> {this.renderMeaningExample(eachOxford, eachOxford.lexicalCategory)}</div>
                     </div>
                 );
@@ -353,11 +357,12 @@ class WordShow extends React.Component {
             if(subsense.definitions) {
                     return subsense.definitions[0]
             } else {
-                if (subsense.short_definitions){
-                    return subsense.short_definitions[0]
-
+                if (subsense.shortDefinitions){
+                    return subsense.shortDefinitions[0]
                 } else {
-                    return null
+                    if(subsense.crossReferenceMarkers){
+                        return subsense.crossReferenceMarkers[0]
+                    }
                 }
             }
         } else {

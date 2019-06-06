@@ -22,6 +22,12 @@ export const signOut = () => {
         type: SIGN_OUT,
     };
 };
+
+export const clearDict = formValues => async (dispatch) => {
+    dispatch({type: CLEAR_DICT, payload: null})
+    dispatch({type: 'CLEAR_POST', payload: null})
+}
+
 export const createGoogle = formValues => async (dispatch, getState) => {
     const {userId} = getState().auth;
     if(userId && formValues.word) {
@@ -32,28 +38,32 @@ export const createGoogle = formValues => async (dispatch, getState) => {
         dispatch({type: CLEAR_DICT, payload: getState()})
         dispatch({type: 'CLEAR_POST', payload: null})
         const responseGoogle = await dict.post('/google',{...formValues, userId});
+        console.log("responseGoogle.data", responseGoogle.data)
         dispatch({type: 'CREATE_GOOGLE', payload: responseGoogle.data});
         // Check the word is valid ?
         if(responseGoogle.data.data) {
             const _id =responseGoogle.data.data._id
             formValues.word = responseGoogle.data.data.word
+            dispatch(createBing(formValues, _id));
             const responseOxford = await dict.post('/oxford',{...formValues, _id: _id});
-            dispatch({type: 'CREATE_GOOGLE', payload: responseOxford.data});
+            dispatch({type: 'CREATE_OXFORD', payload: responseOxford.data});
+        
+            // const responseBing = await dict.post('/bing',{...formValues});
+            // dispatch({type: 'CREATE_IMAGE', payload: responseBing.data});
+            // dict.post('/bingimage',{img: responseBing.data.image[0][0], _id: getState().dict.data._id});
+
+
         }
     }
 };
-export const createBing = formValues => async (dispatch, getState) => {
+export const createBing = (formValues,_id) => async (dispatch, getState) => {
     // Remember to createDict only have a userId attach to it
+    console.log("FORMVALUE BING", formValues, _id)
     const {userId} = getState().auth;
     if(userId) {
         const responseBing = await dict.post('/bing',{...formValues});
         dispatch({type: 'CREATE_IMAGE', payload: responseBing.data});
-        setTimeout( 
-            function(){ 
-                // console.log("GETSTATE AFTER 1s ne:", getState());
-                dict.post('/bingimage',{img: getState().dict.image[0][0], _id: getState().dict.data._id});
-            }
-            ,1000)
+        dict.post('/bingimage',{img: getState().dict.image[0][0], _id:_id});
     }
 };
 export const showExample = (data) => async (dispatch, getState) => {
