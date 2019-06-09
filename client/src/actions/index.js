@@ -28,6 +28,17 @@ export const clearDict = formValues => async (dispatch) => {
     dispatch({type: 'CLEAR_POST', payload: null})
 }
 
+export const clearUser = formValues => async (dispatch) => {
+    dispatch({type: 'CLEAR_USER', payload: null})
+}
+
+export const updateSaveMeaning = formValues => async (dispatch, getState) => {
+    if(getState().dict.data){
+    dict.post('/update', {data:{...getState().post, _id: getState().dict.data._id}})
+    }
+    dispatch({type: 'CLEAR_POST', payload: null})
+}
+
 export const createGoogle = formValues => async (dispatch, getState) => {
     const {userId} = getState().auth;
     if(userId && formValues.word) {
@@ -47,12 +58,6 @@ export const createGoogle = formValues => async (dispatch, getState) => {
             dispatch(createBing(formValues, _id));
             const responseOxford = await dict.post('/oxford',{...formValues, _id: _id});
             dispatch({type: 'CREATE_OXFORD', payload: responseOxford.data});
-        
-            // const responseBing = await dict.post('/bing',{...formValues});
-            // dispatch({type: 'CREATE_IMAGE', payload: responseBing.data});
-            // dict.post('/bingimage',{img: responseBing.data.image[0][0], _id: getState().dict.data._id});
-
-
         }
     }
 };
@@ -66,6 +71,17 @@ export const createBing = (formValues,_id) => async (dispatch, getState) => {
         dict.post('/bingimage',{img: getState().dict.image[0][0], _id:_id});
     }
 };
+
+
+export const translateEngExample = (example) => async (dispatch, getState) => {
+    dispatch({type: 'CLEAR_TRANSLATE', payload: null});
+    const response = await dict.post('/trans',{trans:example});
+    dispatch({type: 'TRANSLATE', payload: response.data});
+    return response
+}
+
+
+
 export const showExample = (data) => async (dispatch, getState) => {
     dispatch({type: 'SHOW_VIET_MEAN', payload: data});
 }
@@ -83,6 +99,12 @@ export const showEngExample = (data) => async (dispatch, getState) => {
 export const ShowMyExample = (data) => async (dispatch, getState) => {
     dispatch({type: 'SHOW_MY_EXAMPLE', payload: data});
 }
+
+export const postMyExample = (yex, id) => async (dispatch, getState) => {
+    dispatch({type: 'DISPLAY_MY_EXAMPLE', payload: {yex:yex, _id:id}});
+    const response = await dict.post('/updateexample', {yex:yex, _id:id})
+}
+
 export const removeEngMean = (data) => async (dispatch, getState) => {
     dispatch({type: 'REMOVE_ENG_MEAN', payload: data});
 }

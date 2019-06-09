@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 // import {renderGoogle, renderOxford, renderImage, test} from './helper'
 import './styles/ShowStyle.css';
-import { showExample, showEngMean, showEngExample , removeEngMean, ShowMyExample, UpdateMeaning, showImage } from '../../actions'
+import { showExample, translateEngExample, showEngMean, showEngExample, updateSaveMeaning , createGoogle, removeEngMean, ShowMyExample, UpdateMeaning, showImage } from '../../actions'
 
 class WordShow extends React.Component {
     constructor(props) {
@@ -19,7 +19,9 @@ class WordShow extends React.Component {
             index: null,
             def : null,
             display: 'none',
-            img:null
+            img:null,
+            trans:null,
+            translate:[]
         }
     }
     render() {
@@ -113,7 +115,7 @@ class WordShow extends React.Component {
     if(image) {
             return image.map((eachimage,index) => {
                 return (
-                    <div key={index} className="image-border-icon d-inline border rounded" onClick={e => this.removeSaveImage(eachimage)}>
+                    <div key={index} className="image-border-icon d-inline mt-2" onClick={e => this.removeSaveImage(eachimage)}>
                         <img src={eachimage} key={eachimage} className='image-display-icon d-inline' alt="from-bing"/>
                     </div>                
                 );
@@ -126,15 +128,19 @@ class WordShow extends React.Component {
     removeSaveImage = (image) => {
         this.props.showImage(image)
     }
+    onSaveExampleClick = () => {
+        this.props.updateSaveMeaning()
+    }
     renderSaveSection(data) {
         if(data.dict.data){
         return (
             <div>
                 <form className="pt-2" onSubmit={this.onFormSubmitExample}>
-                    <input onChange={this.handleExampleChange} value={this.state.myExample} type="text" className="your-example mt-2" placeholder="Your example here..."/>
+                    <input onChange={this.handleExampleChange} value={this.state.myExample} type="text" className="your-example mt-2" placeholder="Input your example here..."/>
                 </form>
                 <hr/>
-                <p className="display-4">{data.dict.data.word}</p>
+                <p className="display-4 d-inline">{data.dict.data.word}</p>
+                <button onClick={e => this.onSaveExampleClick()} className="btn btn-primary d-inline float-right">Save</button>
                 <div className="mt-2 text-success h4"><span>{this.renderFirstVietMeaning(data.dict)}</span>{this.renderShowVietMeaning(data.post)}</div>
                 <hr/>
                 <div>{this.renderShowMyExample(data.post)}</div>
@@ -145,6 +151,9 @@ class WordShow extends React.Component {
         }
     }
     //-------------------------Helper Method-------------------------------------//
+    onSubmitTheCorrectWord = (formValues) => {
+        this.props.createGoogle(formValues)
+    }
     renderGoogle = (google, googleClickMe) => {
         if(google) {
                 if(google.sentences) {
@@ -157,8 +166,14 @@ class WordShow extends React.Component {
                             </div>
                     );
                 } else {
-                    return <p>{google}</p> // The invalid word sending back from server
-                }
+                    return (
+                        <div>
+                        <p className="text text-danger h3"> {google[1]} ?  </p>
+                        <p className="text text-success h4 mt-3">Did you mean: </p>
+                        <button onClick={e => this.onSubmitTheCorrectWord({word: google[0]})} className="btn btn-success btn-lg">{'>>'} {google[0]} </button>
+                        </div>
+                     );
+                } 
             } else {
                 return null
             }
@@ -279,14 +294,23 @@ class WordShow extends React.Component {
     renderMainDefinition = (sense, index , lexicalCategory) => {
         if (sense.definitions) {
             return (
-                    <div key={index} className="d-inline pr-5" onMouseEnter={e => {this.mouseEnter(sense.definitions[0])}} onMouseLeave={this.mouseLeave}>
+                    <div key={index} className="pr-5">
                         <p key={sense.definitions[0]} className="font-weight-bold d-inline" value={sense.definitions[0]}  id="mainExample">{index+1}. {sense.definitions[0]}</p>
-                        <button 
-                            className="btn btn-success btn-xs ml-2 d-inline"
-                            style={{visibility: this.state.def === sense.definitions[0] ? index !== 0?  'visible' : 'hidden' : 'hidden'}}
-                            onClick={(e) => this.insertEngmean(sense.definitions[0], lexicalCategory)}>
-                                Save
-                        </button>
+                        <div className="d-inline" onMouseEnter={e => {this.mouseEnter(sense.definitions[0])}} onMouseLeave={this.mouseLeave}
+                                    style={{opacity: this.state.def === sense.definitions[0] ? '0.5': '0.0'}} >
+                                <button
+                                    className="btn btn btn-outline-secondary btn-xs ml-2 d-inline" 
+                                    onClick={(e) => {this.translateEngExample(sense.definitions[0])}}>
+                                        Trans
+                                </button>
+                                <button
+                                    className="btn btn btn-outline-success btn-xs ml-1 d-inline" 
+                                    onClick={(e) => this.insertEngmean(sense.definitions[0], lexicalCategory)}
+                                >
+                                    Save
+                                </button>
+                        </div>
+                        <span className="font-weight-bold d-block text-primary">{this.renderVietTranslate(sense.definitions[0])}</span>
                     </div>
             );
         } else {
@@ -296,20 +320,37 @@ class WordShow extends React.Component {
     insertEngExample = (engExample) => {
         this.props.showEngExample(engExample)
     }
+    translateEngExample = async (example) => {
+        const myTranslate = await this.props.translateEngExample(example)
+        // console.log("My Await", myTranslate.data.trans)
+        let myTrans = this.state.translate
+        myTrans.push({ex: example, trans:myTranslate.data.trans})
+        this.setState({trans: myTrans})
+        console.log("this.state", this.state)
+    }
     renderMainExample = (sense) => {
     if (sense) {
             if (sense.examples){
                 return sense.examples.map((example,index) => {
                     return ( 
-                        <div key={index} className="pr-5" onMouseEnter={e => {this.mouseEnter(example.text)}} onMouseLeave={this.mouseLeave}>
+                        <div key={index} className="pr-5">
                             <p id="mainExample" className="font-italic ml-2 d-inline">"{example.text}"</p>
-                            <button 
-                                className="btn btn-success btn-xs ml-2 d-inline" 
-                                style={{visibility: this.state.def === example.text ? 'visible' : 'hidden' }}
-                                onClick={(e) => this.insertEngExample(example.text)}>
-                                    Save
-                            </button>
-                        
+                            <div className="d-inline" onMouseEnter={e => {this.mouseEnter(example.text)}} onMouseLeave={this.mouseLeave}
+                                    style={{opacity: this.state.def === example.text ? '0.5': '0.0'}} 
+                                    onMouseEnter={e => {this.mouseEnter(example.text)}} onMouseLeave={this.mouseLeave}>
+                                <button
+                                    className="btn btn btn-outline-secondary btn-xs ml-2 d-inline" 
+                                    onClick={(e) => {this.translateEngExample(example.text)}}>
+                                        Trans
+                                </button>
+                                <button
+                                    className="btn btn btn-outline-success btn-xs ml-1 d-inline" 
+                                    onClick={(e) => {this.insertEngExample(example.text)}}
+                                >
+                                        Save
+                                </button>
+                            </div>
+                            <span className="font-italic ml-2 d-block text-primary">{this.renderVietTranslate(example.text)}</span>
                         </div>
                         );
                 })
@@ -320,23 +361,40 @@ class WordShow extends React.Component {
             return null
         }
     }
+    renderVietTranslate = (example) => {
+        if(this.state.trans){
+            return this.state.trans.map(eachExample => {
+                                if(eachExample.ex === example){
+                                    return `"${eachExample.trans}"`
+                                }
+                            })
+        }
+    }
     renderSubMean = (sense, index, lexicalCategory ) => {
     if (sense){
             if (sense.subsenses){
                 return sense.subsenses.map((subsense, submeanIndex) => {
                     if(subsense) {
                         return (
-                            <div key={submeanIndex}>
-                                <div className="d-inline pr-5" onMouseEnter={e => {this.mouseEnter(this.renderSubMeaning(subsense))}} onMouseLeave={this.mouseLeave}>
-                                    <p id="subMeaning" className="ml-3 font-weight-bold d-inline">{index+1}.{submeanIndex+1} {this.renderSubMeaning(subsense)}
-                                    </p>
-                                    <button 
-                                        className="btn btn-success btn-xs ml-2 d-inline" 
-                                        style={{visibility: this.state.def === this.renderSubMeaning(subsense) ? 'visible' : 'hidden' }}
-                                        onClick={(e) => this.insertEngmean(this.renderSubMeaning(subsense),lexicalCategory)}>
+                            <div key={submeanIndex} >
+                                <div>
+                                        <p id="subMeaning" className="ml-3 font-weight-bold d-inline">{index+1}.{submeanIndex+1} {this.renderSubMeaning(subsense)}
+                                        </p>
+                                    <div className="d-inline" onMouseEnter={e => {this.mouseEnter(this.renderSubMeaning(subsense))}} onMouseLeave={this.mouseLeave}
+                                        style={{opacity: this.state.def === this.renderSubMeaning(subsense) ? '0.5': '0.0'}} >
+                                        <button
+                                            className="btn btn btn-outline-secondary btn-xs ml-2 d-inline" 
+                                            onClick={(e) => {this.translateEngExample(this.renderSubMeaning(subsense))}}>
+                                                Trans
+                                        </button>
+                                        <button
+                                            className="btn btn btn-outline-success btn-xs ml-1 d-inline" 
+                                            onClick={(e) => this.insertEngmean(this.renderSubMeaning(subsense),lexicalCategory)}
+                                        >
                                             Save
-                                    </button>
-
+                                        </button>
+                                    </div>
+                                    <span className="d-block ml-3 font-weight-bold text-primary">{this.renderVietTranslate(this.renderSubMeaning(subsense))}</span>
                                 </div>
                                 <div id="subExamples">{this.renderSubExample(subsense)}</div>
                             </div>
@@ -374,15 +432,25 @@ class WordShow extends React.Component {
             if(subsense.examples){
                 return subsense.examples.map((example,index3) => {
                     return (
-                    <div key={index3} className="pr-5" onMouseEnter={e => {this.mouseEnter(example.text)}} onMouseLeave={this.mouseLeave}>
+                    <div key={index3} className="pr-5">
                         <p id="subExamples" className="ml-5 font-italic d-inline">"{example.text}"
                         </p>
-                        <button 
-                            className="btn btn-success btn-xs ml-2 d-inline" 
-                            style={{visibility: this.state.def === example.text ? 'visible' : 'hidden' }}
-                            onClick={(e) => this.insertEngExample(example.text)}>
-                                Save
-                        </button>
+                        <div className="d-inline" onMouseEnter={e => {this.mouseEnter(example.text)}} onMouseLeave={this.mouseLeave}
+                                    style={{opacity: this.state.def === example.text ? '0.5': '0.0'}} 
+                                    onMouseEnter={e => {this.mouseEnter(example.text)}} onMouseLeave={this.mouseLeave}>
+                                <button
+                                    className="btn btn btn-outline-secondary btn-xs ml-2 d-inline" 
+                                    onClick={(e) => {this.translateEngExample(example.text)}}>
+                                        Trans
+                                </button>
+                                <button
+                                    className="btn btn btn-outline-success btn-xs ml-1 d-inline" 
+                                    onClick={(e) => {this.insertEngExample(example.text)}}
+                                >
+                                        Save
+                                </button>
+                        </div>
+                        <span className="ml-5 font-italic d-block text-primary">{this.renderVietTranslate(example.text)}</span>
                     </div>
                     );
                 })
@@ -418,4 +486,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps, {removeEngMean,showExample, showEngMean, showEngExample, ShowMyExample, UpdateMeaning, showImage})(WordShow);
+export default connect(mapStateToProps, {translateEngExample, updateSaveMeaning,createGoogle,removeEngMean,showExample, showEngMean, showEngExample, ShowMyExample, UpdateMeaning, showImage})(WordShow);

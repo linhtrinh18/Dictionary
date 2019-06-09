@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { signIn, signOut, clearDict } from '../actions'
+import { signIn, signOut, clearDict, clearUser, fetchDictPerPage } from '../actions'
 
 class GoogleAuth extends React.Component {
     // state = { isSignedIn: null};
@@ -20,6 +20,7 @@ class GoogleAuth extends React.Component {
     onAuthChange = (isSignedIn) => {
         if(isSignedIn) {
             this.props.signIn(this.auth.currentUser.get().getId());
+            this.props.fetchDictPerPage(this.auth.currentUser.get().getId(),1)
         } else {
             this.props.signOut();
         }
@@ -33,6 +34,7 @@ class GoogleAuth extends React.Component {
     onSignOutClick = () => {
         this.auth.signOut();
         this.props.clearDict();
+        this.props.clearUser();
     }
     
     renderAuthButton () {
@@ -67,4 +69,4 @@ const mapStateToProps = (state) => {
 
 
 
-export default connect(mapStateToProps, {signIn, signOut, clearDict})(GoogleAuth);
+export default connect(mapStateToProps, {fetchDictPerPage, clearUser, signIn, signOut, clearDict})(GoogleAuth);

@@ -5,7 +5,7 @@ import { fetchDictPerPage } from '../../actions'
 class Pagination extends React.Component {
     
     fetchDictPerPage = (page) => {
-        console.log('this.props', this.props)
+        // console.log('this.props', this.props)
         this.props.fetchDictPerPage(this.props.currentUserId,page);
     }
     
@@ -33,7 +33,6 @@ class Pagination extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log("STATE", state)
     return {
         currentUserId: state.auth.userId,
         page: state.user.page,

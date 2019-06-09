@@ -34,6 +34,12 @@ export default (state = {}, action) => {
                     return {...state, yex:state.yex.filter(word => word !== action.payload)}
                 }
             }
+        case 'DISPLAY_MY_EXAMPLE':
+            if(!state.yex){
+                return {...state, yex:[action.payload]}
+            } else {
+                return {...state, yex:state.yex.concat([action.payload])} 
+            }
         case 'SHOW_IMAGE':
             console.log("REDUCER IMAGE", action.payload)
             if(!state.img){

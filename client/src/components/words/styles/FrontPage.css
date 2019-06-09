@@ -1,0 +1,16 @@
+.fontpage {
+    position: absolute;
+    background-image: url("picture.jpg");
+	width: 100%;
+	height: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    color:white;
+    background-position: center;
+}
+
+
+.jumbotron {
+    background-color:rgba(0, 0, 0, 0.5);
+}

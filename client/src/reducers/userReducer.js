@@ -15,6 +15,8 @@ export default (state = {}, action) => {
             return {...newState, ..._.mapKeys(action.payload.data, '_id'), total: action.payload.total, page: action.payload.page, pages: action.payload.pages };
         case FETCH_DICT:
             return {...state, [action.payload._id]: action.payload};
+        case 'CLEAR_USER':
+            return _.omit(state, Object.keys(state));    
         default:
             return state;
     }
