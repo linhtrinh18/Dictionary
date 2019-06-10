@@ -15,7 +15,7 @@ class Pagination extends React.Component {
                <div>
                     <nav>
                       <ul className="pagination">
-                        <li style={{display: this.props.page === 1 ? 'none' : 'block'}} onClick = {e => this.fetchDictPerPage(1)} className="page-item text-sm page-link"><button  >{'<<'}</button></li>
+                        <li style={{display: this.props.page === 1 ? 'none' : 'block'}} onClick = {e => this.fetchDictPerPage(1)} className="page-item text-sm"><button className="page-link" >{'<<'}</button></li>
                         <li style={{display: this.props.page === 1 ? 'none' : 'block'}} onClick = {e => this.fetchDictPerPage(this.props.page-1)} className="page-item text-sm"><button className="page-link" >{'<'}</button></li>
                         <li style={{display: 'block'}} className="page-item active"><button className="page-link">{this.props.page}</button></li>
                         <li style={{display: this.props.pages - this.props.page >= 1  ? 'block' : 'none'}} onClick = {e => this.fetchDictPerPage(this.props.page+1)} className="page-item"><button className="page-link" >{this.props.page+1}</button></li>

@@ -125,7 +125,7 @@ export const fetchDicts = (userId) => async dispatch => {
     dispatch({type: FETCH_DICTS, payload: response.data});
 }
 export const fetchDictPerPage = (userId, page) => async dispatch => {
-    const response = await dict.get(`/review-page/${page}/${userId}`);
+    const response = await dict.post('/review-page', {page: page, userId: userId});
     dispatch({type: 'FETCH_DICTS_PER_PAGE', payload: {data: response.data.docs, total: response.data.total, page:Number(response.data.page), pages: response.data.pages}});
 }                                                                            
 

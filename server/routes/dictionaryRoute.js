@@ -27,10 +27,9 @@ router.get('/dict/:userId', async (req, res)=>{
     }
 })
 
-router.get('/review-page/:page/:userId', async (req, res)=>{
-    const userId = req.params.userId
-    const currentPage= req.params.page
-    console.log(req.params)
+router.post('/review-page', async (req, res)=>{
+    const userId = req.body.userId
+    const currentPage= req.body.page
     try {
         const dict = await Dict.paginate({userId}, { page: currentPage, limit: 12, sort: {$natural:-1 } })
         res.send(dict)

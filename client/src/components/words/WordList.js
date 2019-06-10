@@ -9,21 +9,31 @@ class WordList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            firstRender: true,
+            firstRender: 'linh',
             myExample:'',
             id : ''
         };
-      }
-    componentDidUpdate() {
-        if(this.state.firstRender){
-            if(this.props.currentUserId){
-                this.props.fetchDictPerPage(this.props.currentUserId,1);
-                this.setState({firstRender : null})
-            }
-        }
     }
+    // componentDidUpdate() {
+    //     // console.log("componentDidUpdate this.state", this.state)
+    //     // console.log("componentDidUpdate this.props", this.props)
+    //     if(this.state.firstRender){
+    //         if(this.props.currentUserId){
+    //             console.log("this.props.fetchDictPerPage(this.props.currentUserId,1);", this.props.currentUserId)
+    //             this.props.fetchDictPerPage(this.props.currentUserId,1);
+    //             this.setState({firstRender : ''})
+    //             console.log("this.state", this.state)
+    //             this.setState({firstRender : ''})
+    //             console.log("this.state", this.state)
+    //         }
+    //     }
+    // }
     componentDidMount() {
-        this.props.fetchDictPerPage(this.props.currentUserId,1);
+        console.log("componentDidMount", this.props)
+        if(this.props.currentUserId){
+            console.log("componentDidMount", this.props)
+            this.props.fetchDictPerPage(this.props.currentUserId,1);
+        }
     }
     playSound = (audio) => {
        const sound = new Audio(audio)
@@ -129,16 +139,18 @@ class WordList extends React.Component {
         );
     }
     renderList() {
-        return this.props.dicts.map((dict,index) => {
-            if(dict.userId === this.props.currentUserId){
-            return (
-              <div key={index} className="border rounded pl-3 mt-3 py-2 border-secondary showMeaning">
-                        {this.renderMeaning(dict, index)}
-              </div>  
-            )} else {
-                return <div key={index}></div>
-            }
-        })
+        if(this.props.dicts.length > 4){
+            return this.props.dicts.map((dict,index) => {
+                    if(dict.userId === this.props.currentUserId){
+                    return (
+                      <div key={index} className="border rounded pl-3 mt-3 py-2 border-secondary showMeaning">
+                                {this.renderMeaning(dict, index)}
+                      </div>  
+                    )} else {
+                    return <div key={index}></div>
+                }
+            })
+        }
     }
     
     render() {
@@ -154,7 +166,6 @@ class WordList extends React.Component {
                         <div className="float-right mb-5">
                             <Pagination/>
                         </div>
-                        
                 </div>
             </div>
             );
