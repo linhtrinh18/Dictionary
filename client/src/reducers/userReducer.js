@@ -16,6 +16,8 @@ export default (state = {}, action) => {
             return {...state, [action.payload._id]: action.payload};
         case 'CLEAR_USER':
             return _.omit(state, Object.keys(state));    
+        case 'DELETE_WORD':
+            return _.omit(state, [action.payload.toString()]);  
         default:
             return state;
     }

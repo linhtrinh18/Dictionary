@@ -110,6 +110,13 @@ export const postMyExample = (yex, id) => async (dispatch, getState) => {
     await dict.post('/updateexample', {yex:yex, _id:id})
 }
 
+
+export const deleteWord = (id) => async (dispatch, getState) => {
+    dispatch({type: 'DELETE_WORD', payload: id});
+    await dict.post('/delete', {_id:id})
+}
+
+
 export const removeEngMean = (data) => async (dispatch, getState) => {
     dispatch({type: 'REMOVE_ENG_MEAN', payload: data});
 }

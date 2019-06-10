@@ -94,6 +94,17 @@ router.post('/trans', async (req, res)=>{
     }
 })
 
+router.post('/delete', async (req, res)=>{
+    try {
+        console.log(req.body)
+        const removeItem = await Dict.findOneAndDelete(req.body._id)
+        res.status(201).send(removeItem);
+    } catch (e) {
+        res.status(400).send(e)
+    }
+})
+
+
 
 router.post('/update', async (req, res)=>{
     console.log("hit Update route")
