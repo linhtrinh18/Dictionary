@@ -3,6 +3,7 @@ import { reducer as formReducer } from 'redux-form';
 import userReducer from './userReducer'
 import transReducer from './transReducer'
 import postReducer from './postReducer'
+import postexReducer from './postexReducer'
 
 import authReducer from './authReducer'
 
@@ -11,5 +12,6 @@ export default combineReducers ({
     form: formReducer,
     user: userReducer,
     dict: transReducer,
-    post: postReducer
+    post: postReducer,
+    postex: postexReducer
 })

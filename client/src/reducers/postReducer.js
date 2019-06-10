@@ -34,14 +34,7 @@ export default (state = {}, action) => {
                     return {...state, yex:state.yex.filter(word => word !== action.payload)}
                 }
             }
-        case 'DISPLAY_MY_EXAMPLE':
-            if(!state.yex){
-                return {...state, yex:[action.payload]}
-            } else {
-                return {...state, yex:state.yex.concat([action.payload])} 
-            }
         case 'SHOW_IMAGE':
-            console.log("REDUCER IMAGE", action.payload)
             if(!state.img){
                 return {...state, img:[action.payload]}
             } else {
@@ -88,7 +81,6 @@ export default (state = {}, action) => {
             let newState = {...state};
             newState.en.map((eachEngMean, index) => {
                 if(JSON.stringify(eachEngMean) === JSON.stringify(action.payload)){
-                    console.log("DONE", index)
                     newState.en.splice(index, 1);
                     return newState
                 } else {

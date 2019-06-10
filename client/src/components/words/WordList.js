@@ -2,7 +2,6 @@ import React from 'react';
 import { connect} from 'react-redux';
 import { fetchDictPerPage } from '../../actions'
 import { postMyExample } from '../../actions'
-import _ from 'lodash'
 import './styles/ShowStyle.css';
 import Pagination from './Pagination'
 import Header from '../Header'
@@ -47,6 +46,9 @@ class WordList extends React.Component {
             return this.props.post.yex.map(eachExample => {
                 if(eachExample._id === id){
                     return <p className="text-danger font-italic">"{eachExample.yex}"</p>
+                }
+                else {
+                    return null
                 }
             })
         }
@@ -126,41 +128,41 @@ class WordList extends React.Component {
               <div key={index} className="border rounded pl-3 mt-3 py-2 border-secondary showMeaning">
                         {this.renderMeaning(dict, index)}
               </div>  
-            )};
-            return <div></div>
+            )} else {
+                return <div key={index}></div>
+            }
         })
     }
     
     render() {
-        console.log("this.props.dicts", this.props.dicts)
-        if(this.props.dicts.length > 3){
+        // if(this.props.dicts.length > 3){
         return (
-            <div key={'container'} className="container">
-                    <h1 key={'What you have learn so far'} className="mt-5 mb-4 pb-5 text-primary" style={{fontFamily: 'Coiny, cursive'}}><u>{this.props.currentUserId ? 'What you have learned so far:': null}</u></h1>
-                    <Pagination/>
-                    <div key={'renderList'}  className="mb-2">
-                        {this.renderList()}
-                    </div>
-                    <div className="float-right mb-5">
+            <div>
+                <Header displaySignIn={true}/>
+                <div key={'container'} className="container">
+                        <h1 key={'What you have learn so far'} className="mt-5 mb-4 pb-5 text-primary" style={{fontFamily: 'Coiny, cursive'}}><u>{this.props.currentUserId ? 'What you have learned so far:': null}</u></h1>
                         <Pagination/>
-                    </div>
-                    
+                        <div key={'renderList'}  className="mb-2">
+                            {this.renderList()}
+                        </div>
+                        <div className="float-right mb-5">
+                            <Pagination/>
+                        </div>
+                        
+                </div>
             </div>
             );
-        } else {
-            return null
-        }
+        
     }
 }
     
 
 const mapStateToProps = (state) => {
-    
     return {
         dicts: Object.values(state.user),
         currentUserId: state.auth.userId,
         isSignedIn: state.auth.isSignedIn,
-        post: state.post
+        post: state.postex
     }
 }
 

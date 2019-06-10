@@ -14,14 +14,14 @@ class Pagination extends React.Component {
             return (
                <div>
                     <nav>
-                      <ul class="pagination">
-                        <li style={{display: this.props.page === 1 ? 'none' : 'block'}} onClick = {e => this.fetchDictPerPage(1)}class="page-item text-sm"><a class="page-link" href="#">{'<<'}</a></li>
-                        <li style={{display: this.props.page === 1 ? 'none' : 'block'}} onClick = {e => this.fetchDictPerPage(this.props.page-1)} class="page-item text-sm"><a class="page-link" href="#">{'<'}</a></li>
-                        <li style={{display: 'block'}} class="page-item active"><a class="page-link" href="#">{this.props.page}</a></li>
-                        <li style={{display: this.props.pages - this.props.page >= 1  ? 'block' : 'none'}} onClick = {e => this.fetchDictPerPage(this.props.page+1)} class="page-item"><a class="page-link" href="#">{this.props.page+1}</a></li>
-                        <li style={{display: this.props.pages - this.props.page >= 2  ? 'block' : 'none'}} onClick = {e => this.fetchDictPerPage(this.props.page+2)} class="page-item"><a class="page-link" href="#">{this.props.page+2}</a></li>
-                        <li style={{display: this.props.pages === this.props.page ? 'none' : 'block'}} onClick = {e => this.fetchDictPerPage(this.props.page+1)} class="page-item"><a class="page-link" href="#">Next</a></li>
-                        <li style={{display: this.props.pages === this.props.page ? 'none' : 'block'}} onClick = {e => this.fetchDictPerPage(this.props.pages)} class="page-item"><a class="page-link" href="#">{'>>'}</a></li>
+                      <ul className="pagination">
+                        <li style={{display: this.props.page === 1 ? 'none' : 'block'}} onClick = {e => this.fetchDictPerPage(1)} className="page-item text-sm page-link"><button  >{'<<'}</button></li>
+                        <li style={{display: this.props.page === 1 ? 'none' : 'block'}} onClick = {e => this.fetchDictPerPage(this.props.page-1)} className="page-item text-sm"><button className="page-link" >{'<'}</button></li>
+                        <li style={{display: 'block'}} className="page-item active"><button className="page-link">{this.props.page}</button></li>
+                        <li style={{display: this.props.pages - this.props.page >= 1  ? 'block' : 'none'}} onClick = {e => this.fetchDictPerPage(this.props.page+1)} className="page-item"><button className="page-link" >{this.props.page+1}</button></li>
+                        <li style={{display: this.props.pages - this.props.page >= 2  ? 'block' : 'none'}} onClick = {e => this.fetchDictPerPage(this.props.page+2)} className="page-item"><button className="page-link" >{this.props.page+2}</button></li>
+                        <li style={{display: this.props.pages === this.props.page ? 'none' : 'block'}} onClick = {e => this.fetchDictPerPage(this.props.page+1)} className="page-item"><button className="page-link" >Next</button></li>
+                        <li style={{display: this.props.pages === this.props.page ? 'none' : 'block'}} onClick = {e => this.fetchDictPerPage(this.props.pages)} className="page-item"><button className="page-link" >{'>>'}</button></li>
                       </ul>
                     </nav>
                </div>

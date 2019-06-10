@@ -1,7 +1,6 @@
 import { SIGN_IN,
         SIGN_OUT,
         FETCH_DICTS,
-        FETCH_DICT,
         DELETE_DICT,
         EDIT_DICT,
         CLEAR_DICT
@@ -30,6 +29,7 @@ export const clearDict = formValues => async (dispatch) => {
 
 export const clearUser = formValues => async (dispatch) => {
     dispatch({type: 'CLEAR_USER', payload: null})
+    history.push('/')
 }
 
 export const updateSaveMeaning = formValues => async (dispatch, getState) => {
@@ -49,21 +49,26 @@ export const createGoogle = formValues => async (dispatch, getState) => {
         dispatch({type: CLEAR_DICT, payload: getState()})
         dispatch({type: 'CLEAR_POST', payload: null})
         const responseGoogle = await dict.post('/google',{...formValues, userId});
-        console.log("responseGoogle.data", responseGoogle.data)
         dispatch({type: 'CREATE_GOOGLE', payload: responseGoogle.data});
         // Check the word is valid ?
         if(responseGoogle.data.data) {
             const _id =responseGoogle.data.data._id
             formValues.word = responseGoogle.data.data.word
-            dispatch(createBing(formValues, _id));
+            
             const responseOxford = await dict.post('/oxford',{...formValues, _id: _id});
-            dispatch({type: 'CREATE_OXFORD', payload: responseOxford.data});
+            if(responseOxford.data.image){ // Have image in the database
+                dispatch({type: 'CREATE_OXFORD', payload: responseOxford.data});
+                //Have image in the database - Go with update imgae to database
+                dict.post('/bingimage',{img: getState().dict.image[0][0], _id:_id});
+            } else {
+                dispatch({type: 'CREATE_OXFORD', payload: responseOxford.data});
+                dispatch(createBing(formValues, _id));
+            }
         }
     }
 };
 export const createBing = (formValues,_id) => async (dispatch, getState) => {
     // Remember to createDict only have a userId attach to it
-    console.log("FORMVALUE BING", formValues, _id)
     const {userId} = getState().auth;
     if(userId) {
         const responseBing = await dict.post('/bing',{...formValues});
@@ -102,7 +107,7 @@ export const ShowMyExample = (data) => async (dispatch, getState) => {
 
 export const postMyExample = (yex, id) => async (dispatch, getState) => {
     dispatch({type: 'DISPLAY_MY_EXAMPLE', payload: {yex:yex, _id:id}});
-    const response = await dict.post('/updateexample', {yex:yex, _id:id})
+    await dict.post('/updateexample', {yex:yex, _id:id})
 }
 
 export const removeEngMean = (data) => async (dispatch, getState) => {

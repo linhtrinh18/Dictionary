@@ -38,22 +38,24 @@ class GoogleAuth extends React.Component {
     }
     
     renderAuthButton () {
-        if(this.props.isSignedIn === null){
-            return null
-        } else if (this.props.isSignedIn) {
-            return (
-                <button onClick={this.onSignOutClick} className="btn btn-danger">
-                     <i className="fa fa-google"/>
-                     <span> </span>Sign Out
-                </button>
-            );
-        } else {
-            return (
-                <button onClick={this.onSignInClick} className="btn btn-danger">
-                     <i className="fa fa-google" />
-                     <span> </span>Sign In with Google
-                </button>
-            );
+        if(this.props.displaySignIn) {
+            if(this.props.isSignedIn === null){
+                return null
+            } else if (this.props.isSignedIn) {
+                return (
+                    <button onClick={this.onSignOutClick} className="btn btn-danger">
+                         <i className="fa fa-google"/>
+                         <span> </span>Sign Out
+                    </button>
+                );
+            } else {
+                return (
+                    <button onClick={this.onSignInClick} className="btn btn-danger">
+                         <i className="fa fa-google" />
+                         <span> </span>Sign In with Google
+                    </button>
+                );
+            }
         }
     }
     
@@ -63,7 +65,6 @@ class GoogleAuth extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    //console.log(state)
     return { isSignedIn: state.auth.isSignedIn}
 }
 

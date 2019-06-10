@@ -32,7 +32,7 @@ router.get('/review-page/:page/:userId', async (req, res)=>{
     const currentPage= req.params.page
     console.log(req.params)
     try {
-        const dict = await Dict.paginate({userId}, { page: currentPage, limit: 5, sort: {$natural:-1 } })
+        const dict = await Dict.paginate({userId}, { page: currentPage, limit: 12, sort: {$natural:-1 } })
         res.send(dict)
     } catch (e) {
         console.log("error")
@@ -70,10 +70,10 @@ router.post('/oxford', async (req, res)=>{
         } else {
             console.log("HAVE ONE - GO WITH DATABASE")
             const convertToJSON = JSON.stringify(database)
-            // console.log('DATABASEHAHAH', convertToJSON)
+            console.log('DATABASEHAHAH', convertToJSON)
             const newDatabase = JSON.parse(convertToJSON)
             // console.log(newDatabase.meaning)
-            res.status(201).send({oxford: newDatabase[0].meaning});
+            res.status(201).send({oxford: newDatabase[0].meaning, image:newDatabase[0].image});
             const oxfordData = helper.renderEnglishMeaning(newDatabase[0].meaning)
             const dict = await Dict.findByIdAndUpdate(req.body._id,{en: oxfordData.oxfordData, pro:oxfordData.phoneticSpelling, aud:oxfordData.audioFile }, {new: true})
         }
@@ -122,7 +122,9 @@ router.post('/update', async (req, res)=>{
 
 router.post('/google', async (req, res) => {
     const response = await googleApi(req.body.word)
+    console.log("DOES", JSON.stringify(response.data))
     const baseFrom = helper.checkBaseform(response.data)
+    console.log("AFTER CHECK BASE FORM:" , baseFrom)
     // Check valid word
     if(response.data.dict) {
         req.body.word = baseFrom;
@@ -143,16 +145,8 @@ router.post('/google', async (req, res) => {
 
 router.post('/bing', async (req, res) => {
     const response = await bingImage(req.body.word)
-    // console.log(response)
+    console.log(response)
     res.status(201).send(response);
-    // req.body.word = baseFrom;
-    // const dict = new Dict(req.bod
-    // try {
-    //     await dict.save()
-    //     res.status(201).send(dict);
-    // }catch(e) {
-    //     res.status(400).send(e)
-    // }
 });
 
 

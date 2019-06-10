@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 // import {renderGoogle, renderOxford, renderImage, test} from './helper'
 import './styles/ShowStyle.css';
 import { showExample, translateEngExample, showEngMean, showEngExample, updateSaveMeaning , createGoogle, removeEngMean, ShowMyExample, UpdateMeaning, showImage } from '../../actions'
-
+import Header from '../Header'
 class WordShow extends React.Component {
     constructor(props) {
         super(props)
@@ -24,14 +24,14 @@ class WordShow extends React.Component {
             translate:[]
         }
     }
-    render() {
+    renderMainpage = () => {
         if (!(Object.keys(this.props.showData.dict).length === 0)) {
             return (
                 <div className = "mx-5 mt-4">
                     <div className="row">
                         <div key={'renderGoolge'} className="google col-md-2 mt-3"> {this.renderGoogle(this.props.showData.dict.google)}</div>
                         <div key={'renderOxford'} className="oxford col-md-7" style={{lineHeight: 'normal'}}> {this.renderOxford(this.props.showData.dict.oxford)} </div>
-                        <div key={'renderBing'} className="border rounded col-md-3 mt-3"> {this.renderSaveSection(this.props.showData)}</div>
+                        <div key={'renderBing'} className="col-md-3 border rounded mt-2"> {this.renderSaveSection(this.props.showData)}</div>
                     </div>
                     <section className="mt-3">
                             {this.renderImage(this.props.showData.dict.image)}
@@ -43,6 +43,16 @@ class WordShow extends React.Component {
             return <div></div>
         }
     }
+    render () {
+        return (
+            <div>
+                <Header displaySignIn={true}/>
+                {this.renderMainpage()}
+            </div>
+        );
+    }
+    
+    
     onFormSubmitExample = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -297,7 +307,7 @@ class WordShow extends React.Component {
                     <div key={index} className="pr-5">
                         <p key={sense.definitions[0]} className="font-weight-bold d-inline" value={sense.definitions[0]}  id="mainExample">{index+1}. {sense.definitions[0]}</p>
                         <div className="d-inline" onMouseEnter={e => {this.mouseEnter(sense.definitions[0])}} onMouseLeave={this.mouseLeave}
-                                    style={{opacity: this.state.def === sense.definitions[0] ? '0.5': '0.0'}} >
+                                    style={{opacity: this.state.def === sense.definitions[0] ? '0.7': '0.1'}} >
                                 <button
                                     className="btn btn btn-outline-secondary btn-xs ml-2 d-inline" 
                                     onClick={(e) => {this.translateEngExample(sense.definitions[0])}}>
@@ -322,11 +332,9 @@ class WordShow extends React.Component {
     }
     translateEngExample = async (example) => {
         const myTranslate = await this.props.translateEngExample(example)
-        // console.log("My Await", myTranslate.data.trans)
         let myTrans = this.state.translate
         myTrans.push({ex: example, trans:myTranslate.data.trans})
         this.setState({trans: myTrans})
-        console.log("this.state", this.state)
     }
     renderMainExample = (sense) => {
     if (sense) {
@@ -336,8 +344,8 @@ class WordShow extends React.Component {
                         <div key={index} className="pr-5">
                             <p id="mainExample" className="font-italic ml-2 d-inline">"{example.text}"</p>
                             <div className="d-inline" onMouseEnter={e => {this.mouseEnter(example.text)}} onMouseLeave={this.mouseLeave}
-                                    style={{opacity: this.state.def === example.text ? '0.5': '0.0'}} 
-                                    onMouseEnter={e => {this.mouseEnter(example.text)}} onMouseLeave={this.mouseLeave}>
+                                    style={{opacity: this.state.def === example.text ? '0.7': '0.1'}} 
+                                    >
                                 <button
                                     className="btn btn btn-outline-secondary btn-xs ml-2 d-inline" 
                                     onClick={(e) => {this.translateEngExample(example.text)}}>
@@ -367,6 +375,9 @@ class WordShow extends React.Component {
                                 if(eachExample.ex === example){
                                     return `"${eachExample.trans}"`
                                 }
+                                else {
+                                    return null
+                                }
                             })
         }
     }
@@ -381,7 +392,7 @@ class WordShow extends React.Component {
                                         <p id="subMeaning" className="ml-3 font-weight-bold d-inline">{index+1}.{submeanIndex+1} {this.renderSubMeaning(subsense)}
                                         </p>
                                     <div className="d-inline" onMouseEnter={e => {this.mouseEnter(this.renderSubMeaning(subsense))}} onMouseLeave={this.mouseLeave}
-                                        style={{opacity: this.state.def === this.renderSubMeaning(subsense) ? '0.5': '0.0'}} >
+                                        style={{opacity: this.state.def === this.renderSubMeaning(subsense) ? '0.7': '0.1'}} >
                                         <button
                                             className="btn btn btn-outline-secondary btn-xs ml-2 d-inline" 
                                             onClick={(e) => {this.translateEngExample(this.renderSubMeaning(subsense))}}>
@@ -436,8 +447,8 @@ class WordShow extends React.Component {
                         <p id="subExamples" className="ml-5 font-italic d-inline">"{example.text}"
                         </p>
                         <div className="d-inline" onMouseEnter={e => {this.mouseEnter(example.text)}} onMouseLeave={this.mouseLeave}
-                                    style={{opacity: this.state.def === example.text ? '0.5': '0.0'}} 
-                                    onMouseEnter={e => {this.mouseEnter(example.text)}} onMouseLeave={this.mouseLeave}>
+                                    style={{opacity: this.state.def === example.text ? '0.7': '0.1'}} 
+                                    >
                                 <button
                                     className="btn btn btn-outline-secondary btn-xs ml-2 d-inline" 
                                     onClick={(e) => {this.translateEngExample(example.text)}}>

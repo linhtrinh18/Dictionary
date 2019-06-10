@@ -35,6 +35,13 @@ class Header extends React.Component {
                   <Link to="/" className="navbar-brand">
                          Dictionary
                   </Link>
+                  <ul className="navbar-nav">
+                  <li className="nav-item">
+                    <Link to="/review" className="nav-link">
+                         Review
+                     </Link>
+                  </li>
+                  </ul>
                   <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNav" aria-controls="navbarNav"
                     aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
@@ -44,7 +51,7 @@ class Header extends React.Component {
                         <Field name="word" component={this.renderInput} />
                     </form>
                     <div className='ml-auto'>
-                        <GoogleAuth  />
+                        <GoogleAuth displaySignIn={this.props.displaySignIn} />
                     </div>
                   </div>
                 </nav>
@@ -64,7 +71,6 @@ const formWrapped = reduxForm({
 
 
 const mapStateToProps = (state) => {
-    // console.log("CREATE STATE",state)
     return {oxford: state.dict}
 }
 
