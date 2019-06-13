@@ -13,7 +13,9 @@ let dictSchema = new mongoose.Schema({
    word: {
       type: String,
       lowercase: true
-   }
+   },
+   meaning: Array,
+   image: Array
 });
 
 dictSchema.plugin(mongoosePaginate);

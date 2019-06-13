@@ -48,9 +48,9 @@ class FrontPage extends React.Component {
         return (
             <div className="fontpage">
                 <Header displaySignIn={this.props.isSignedIn}/>
-                <div class="jumbotron container mt-2">
-                  <h1 class="display-4">English Dictionary</h1>
-                  <p class="lead">This is a new way to learn and have fun with English Dictionary. Everything you need are in just one place and only one click.</p>
+                <div className="jumbotron container mt-2">
+                  <h1 className="display-4">English Dictionary</h1>
+                  <p className="lead">This is a new way to learn and have fun with English Dictionary. Everything you need are in just one place and only one click.</p>
                   <div className="mt-4">
                     {this.renderGoogleAuthButton()}
                   </div>

@@ -4,6 +4,10 @@ import { fetchDictPerPage } from '../../actions'
 
 class Pagination extends React.Component {
     
+    componentDidUpdate() {
+        window.scrollTo(0, 0);
+    }
+    
     fetchDictPerPage = (page) => {
         // console.log('this.props', this.props)
         this.props.fetchDictPerPage(this.props.currentUserId,page);

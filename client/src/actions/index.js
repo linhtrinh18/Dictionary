@@ -54,14 +54,16 @@ export const createGoogle = formValues => async (dispatch, getState) => {
         if(responseGoogle.data.data) {
             const _id =responseGoogle.data.data._id
             formValues.word = responseGoogle.data.data.word
-            
             const responseOxford = await dict.post('/oxford',{...formValues, _id: _id});
+            dispatch({type: 'CREATE_OXFORD', payload: responseOxford.data});
             if(responseOxford.data.image){ // Have image in the database
-                dispatch({type: 'CREATE_OXFORD', payload: responseOxford.data});
-                //Have image in the database - Go with update imgae to database
-                dict.post('/bingimage',{img: getState().dict.image[0][0], _id:_id});
+                if(!responseOxford.data.image.length === 0){
+                    //Have image in the database - Go with update imgae to database
+                    dict.post('/bingimage',{img: getState().dict.image[0][0], _id:_id});
+                } else {
+                    dispatch(createBing(formValues, _id));
+                }
             } else {
-                dispatch({type: 'CREATE_OXFORD', payload: responseOxford.data});
                 dispatch(createBing(formValues, _id));
             }
         }

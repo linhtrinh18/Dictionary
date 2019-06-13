@@ -9,29 +9,13 @@ class WordList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            firstRender: 'linh',
             myExample:'',
             id : ''
         };
     }
-    // componentDidUpdate() {
-    //     // console.log("componentDidUpdate this.state", this.state)
-    //     // console.log("componentDidUpdate this.props", this.props)
-    //     if(this.state.firstRender){
-    //         if(this.props.currentUserId){
-    //             console.log("this.props.fetchDictPerPage(this.props.currentUserId,1);", this.props.currentUserId)
-    //             this.props.fetchDictPerPage(this.props.currentUserId,1);
-    //             this.setState({firstRender : ''})
-    //             console.log("this.state", this.state)
-    //             this.setState({firstRender : ''})
-    //             console.log("this.state", this.state)
-    //         }
-    //     }
-    // }
     componentDidMount() {
-        console.log("componentDidMount", this.props)
+        window.scrollTo(0, 0);
         if(this.props.currentUserId){
-            console.log("componentDidMount", this.props)
             this.props.fetchDictPerPage(this.props.currentUserId,1);
         }
     }
@@ -65,7 +49,6 @@ class WordList extends React.Component {
     }
     
     deleteWord = (id) => {
-        console.log(id)
         this.props.deleteWord(id)
     }
     
@@ -139,7 +122,7 @@ class WordList extends React.Component {
         );
     }
     renderList() {
-        if(this.props.dicts.length > 4){
+        if(this.props.dicts.length >= 4){
             return this.props.dicts.map((dict,index) => {
                     if(dict.userId === this.props.currentUserId){
                     return (
