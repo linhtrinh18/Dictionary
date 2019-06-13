@@ -6,6 +6,7 @@ let {oxfordApi} = require('../apis/oxford')
 let {googleApi} = require('../apis/googleTrans')
 let {bingImage} = require('../apis/bingImage')
 let {spellCheck} = require('../apis/spellCheck')
+let {googleImage} = require('../apis/googleImage')
 let {translateSentence} = require('../apis/translateSentence')
 let helper = require('./helper/helper')
 
@@ -94,8 +95,6 @@ router.post('/delete', async (req, res)=>{
     }
 })
 
-
-
 router.post('/update', async (req, res)=>{
     try {
         const dict = await Dict.findById(req.body.data._id)
@@ -117,6 +116,20 @@ router.post('/update', async (req, res)=>{
         res.status(400).send(e)
     }
 })
+
+router.post('/googleimage', async (req,res) => {
+    try {
+        const response = await googleImage(req.body.word.toLowerCase())
+        const gooImage = []
+        response.data.items.forEach(eachImage => {
+            gooImage.push(eachImage.link)
+        })
+        res.status(201).send({gooImage: gooImage});
+    } catch (e) {
+        res.status(400).send(e)
+    }
+})
+
 
 router.post('/google', async (req, res) => {
     const response = await googleApi(req.body.word)

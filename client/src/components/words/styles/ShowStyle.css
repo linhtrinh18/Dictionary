@@ -3,7 +3,7 @@ p {
     margin-bottom: 0.2rem;
 }
 
-.image-border{
+.image-border {
   flex-grow: 1;
   margin: 2px;
   height: 150px;
@@ -18,20 +18,33 @@ p {
   vertical-align: bottom;
 }
 
+.image-display-google {
+  height: 50px;
+  object-fit: cover;
+  max-width: 100%;
+  min-width: 100%;
+  vertical-align: bottom;
+}
+
+.image-border-google {
+  flex-grow: 1;
+  margin: 2px;
+  height: 50px;
+}
+
 .image-display-icon{
   height: 80px;
   object-fit: cover;
   max-width: 30%;
   min-width: 30%;
-  margin: 2px 1px 1px 1px;
+  margin: 1px 1px 1px 1px;
   border: 1px solid black;
   /*vertical-align: bottom;*/
 }
 
-.image-border-icon{
+.image-border-icon {
   flex-grow: 1;
   margin: 2px;
-
   height: 80px;
 }
 

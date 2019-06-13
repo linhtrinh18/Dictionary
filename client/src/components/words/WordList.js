@@ -14,11 +14,11 @@ class WordList extends React.Component {
         };
     }
     componentDidMount() {
-        window.scrollTo(0, 0);
         if(this.props.currentUserId){
             this.props.fetchDictPerPage(this.props.currentUserId,1);
         }
     }
+    
     playSound = (audio) => {
        const sound = new Audio(audio)
        sound.play();
