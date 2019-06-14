@@ -15,7 +15,8 @@ let dictSchema = new mongoose.Schema({
       lowercase: true
    },
    meaning: Array,
-   image: Array
+   image: Array,
+   gooImage: Array
 });
 
 dictSchema.plugin(mongoosePaginate);

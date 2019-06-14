@@ -125,6 +125,7 @@ router.post('/googleimage', async (req,res) => {
             gooImage.push(eachImage.link)
         })
         res.status(201).send({gooImage: gooImage});
+        await DB.findOneAndUpdate({word: req.body.word.toLowerCase()}, {googImage: gooImage}, {upsert: true})
     } catch (e) {
         res.status(400).send(e)
     }

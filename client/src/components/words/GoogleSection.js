@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {showExample} from '../../actions'
-import { connect } from 'react-redux'
+import { connect,createGoogle } from 'react-redux'
 
 class GoogleSection extends React.Component {
     renderGoogle = (google) => {
@@ -55,6 +55,10 @@ class GoogleSection extends React.Component {
     insertVietmean = (vietMean) => {
         this.props.showExample(vietMean)
     }
+    onSubmitTheCorrectWord = (formValues) => {
+        this.props.createGoogle(formValues)
+    }
+    
     render() {
         return (
             <div>
@@ -65,4 +69,4 @@ class GoogleSection extends React.Component {
 }
 
 
-export default connect(null, { showExample })(GoogleSection)
+export default connect(null, { showExample,createGoogle })(GoogleSection)
