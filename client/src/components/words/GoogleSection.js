@@ -1,7 +1,7 @@
 import React from 'react';
 
-import {showExample} from '../../actions'
-import { connect,createGoogle } from 'react-redux'
+import {showExample, createGoogle} from '../../actions'
+import { connect } from 'react-redux'
 
 class GoogleSection extends React.Component {
     renderGoogle = (google) => {
