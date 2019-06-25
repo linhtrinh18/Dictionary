@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { createGoogle } from '../actions';
 import { createBing } from '../actions';
 import { UpdateMeaning } from '../actions';
-
+import { Navbar, Nav , Form} from 'react-bootstrap'
 
 
 
@@ -20,9 +20,13 @@ class Header extends React.Component {
 
     renderInput = ({input, label, meta}) => {
         return (
-            <div>
-                <input {...input} className="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="word" autoFocus/>
-                <button className="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+            <div className="ml-2 d-none d-md-flex input-group">
+                 <input {...input} className="form-control" type="text" placeholder="Search.."  autoFocus/>
+                    <div className="input-group-append">
+                    <span className="input-group-text search-box bg-success" id="search-icon">
+                        <i className="fas fa-search"></i>
+                    </span>
+                </div>
             </div>
         );
     }
@@ -31,30 +35,31 @@ class Header extends React.Component {
     render() {
         return (
             <div>
-                <nav className="navbar navbar-expand-md navbar-dark bg-primary">
-                  <Link to="/" className="navbar-brand">
-                         Dictionary
-                  </Link>
-                  <ul className="navbar-nav">
-                  <li className="nav-item">
-                    <Link to="/review" className="nav-link">
+                <Navbar bg="primary" expand="md" variant="dark" fixed="top">
+                        <Link to="/" className="navbar-brand ml-lg-4">
+                            <img style={{width:'35px'}} src={require('./words/styles/books.svg')} alt="logo"/>
+                            <span className="ml-2"> Dictionary</span>
+                        </Link>
+                    <Nav>
+                        <Link to="/review" className="nav-link">
                          Review
-                     </Link>
-                  </li>
-                  </ul>
-                  <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNav" aria-controls="navbarNav"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                  </button>
-                  <div className="collapse navbar-collapse nav-pills" id="myNav">
-                    <form onSubmit={this.props.handleSubmit(this.onSubmit)} className="form-inline ml-3" action="/dict" method="post" name="word" autoComplete="off">
-                        <Field name="word" component={this.renderInput} />
-                    </form>
-                    <div className='ml-auto'>
-                        <GoogleAuth displaySignIn={this.props.displaySignIn} />
-                    </div>
-                  </div>
-                </nav>
+                        </Link>
+                    </Nav>
+                    <Nav>
+                        <Link to="/" className="nav-link">
+                         FlashCard
+                        </Link>
+                    </Nav>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Form inline onSubmit={this.props.handleSubmit(this.onSubmit)} autoComplete="off">
+                          <Field name="word" component={this.renderInput} />
+                        </Form>
+                        <div className='ml-auto'>
+                            <GoogleAuth displaySignIn={this.props.displaySignIn} />
+                        </div>
+                  </Navbar.Collapse>
+                </Navbar>
             </div>
         );
     }

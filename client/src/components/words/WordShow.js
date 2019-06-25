@@ -16,7 +16,7 @@ class WordShow extends React.Component {
     renderMainpage = () => {
         if (!(Object.keys(this.props.showData.dict).length === 0)) {
             return (
-                <div className = "mx-5 mt-4">
+                <div className="mx-4 mt-4">
                     <div className="row">
                         <div className="google col-md-2 mt-3"><GoogleSection google={this.props.showData.dict.google}/></div>
                         <div key={'renderOxford'} className="oxford col-md-7" style={{lineHeight: 'normal'}}> <OxfordSection oxford={this.props.showData.dict.oxford}/> </div>
@@ -39,7 +39,7 @@ class WordShow extends React.Component {
     }
     render () {
         return (
-            <div>
+            <div className="pt-2">
                 <Header displaySignIn={true}/>
                 {this.renderMainpage()}
             </div>

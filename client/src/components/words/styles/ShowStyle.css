@@ -1,7 +1,23 @@
+@import url("https://fonts.googleapis.com/css?family=Kaushan+Script");
+@import url('https://fonts.googleapis.com/css?family=Mali&display=swap');
+body {
+  padding-top: 58px;
+}
+
 p {
     margin-top: 0;
     margin-bottom: 0.2rem;
 }
+
+.btn-black {
+  color: #000 !important;
+  border-color: #000 !important;
+}
+.btn-black:hover {
+  color: #fff !important;
+  background: #000 !important;
+}
+
 
 .image-border {
   flex-grow: 1;
@@ -91,4 +107,203 @@ hr {
     border:1px solid #555;
     /*padding: .15rem .1rem .2rem .1rem ;*/
     padding-top: 3px;
+}
+
+
+.navbar-toggler {
+  outline: none !important;
+}
+
+.page-link:focus {
+  outline:none !important;
+} 
+
+.fontpage {
+    position: absolute;
+    background-image: url("picture.jpg");
+  	width: 100%;
+  	height: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    color:white;
+    background-position: center;
+}
+
+
+.jumbotron {
+    background-color:rgba(20, 20, 0, 0.3);
+}
+
+.introduction {
+  font-family: 'Mali', cursive;
+}
+
+.max-height {
+  min-height: calc(100vh - 66px);;
+  background: linear-gradient(rgba(141, 153, 174, 0.5), rgba(141, 153, 174, 0.1)), url("picture.jpg");
+  background-position: center;
+  background-size:cover;
+  background-attachment: fixed;
+  background-repeat:no-repeat;
+  position: relative
+}
+
+/*.banner {*/
+/*  margin-top: -30rem;*/
+/*}*/
+
+.banner-title {
+  font-size: 4rem;
+  color: #fff  ;
+}
+
+
+.about-banner-title, .feature-banner-title {
+  font-size: 3rem;
+  color: #007bff ;
+}
+
+
+.form-inline {
+    text-align: center;
+}
+
+/*About Section*/
+.about-img {
+  position: relative;
+}
+.about-img::before {
+  content: "";
+  position: absolute;
+  top: -24px;
+  top: -1.5rem;
+  left: -27.2px;
+  left: -1.7rem;
+  width: 100%;
+  height: 100%;
+  outline: 8px solid #17223b;
+  outline: 0.5rem solid #17223b;
+  z-index: -1;
+  -webkit-transition: all 1s linear;
+  transition: all 1s linear;
+}
+.about-img:hover:before {
+  top: 0;
+  left: 0;
+}
+
+/*Feature*/
+
+#feature {
+  background-color: rgb(238, 238, 238);
+}
+
+.single-item {
+  -webkit-transition: all 0.3 linear;
+  transition: all 0.3 linear;
+}
+.single-item:hover {
+  -webkit-box-shadow: 0 10px 15px rgb(0, 0, 0);
+  box-shadow: 0 10px 15px rgb(0, 0, 0);
+}
+.img-container {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.feature-image {
+  -webkit-transition: all 1s ease-in-out;
+  transition: all 1s ease-in-out;
+}
+.img-container:hover .store-img {
+  -webkit-transform: scale(1.2);
+  transform: scale(1.2);
+}
+.feature-img-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 12px;
+  padding: 0.75rem;
+  background: rgb(249, 228, 148);
+  border-top-left-radius: 16px;
+  border-top-left-radius: 1rem;
+  -webkit-transition: all 1s ease-in-out;
+  transition: all 1s ease-in-out;
+  -webkit-transform: translate(100%, 100%);
+  transform: translate(100%, 100%);
+}
+.img-container:hover .store-item-icon {
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+.feature-img-icon:hover {
+  color: #fff;
+}.single-item {
+  -webkit-transition: all 0.3 linear;
+  transition: all 0.3 linear;
+}
+.single-item:hover {
+  -webkit-box-shadow: 0 10px 15px rgb(0, 0, 0);
+  box-shadow: 0 10px 15px rgb(0, 0, 0);
+}
+.img-container {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.feature-img {
+  -webkit-transition: all 1s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+.img-container:hover .feature-image {
+  -webkit-transform: scale(1.2);
+  transform: scale(1.2);
+}
+.feature-img-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 12px;
+  padding: 0.75rem;
+  background: #28a745;
+  border-top-left-radius: 16px;
+  border-top-left-radius: 1rem;
+  -webkit-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  -webkit-transform: translate(100%, 100%);
+  transform: translate(100%, 100%);
+}
+.img-container:hover .feature-img-icon {
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+.feature-img-icon:hover {
+  color: #fff;
+}
+
+/*benefit*/
+
+/* services */
+.benefits {
+  color: #fff;
+  background: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(rgba(0, 0, 0, 0.6)),
+      to(rgba(0, 0, 0, 0.6))
+    ),
+    url("creative.jpg") center/cover fixed no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url("creative.jpg") center/cover fixed no-repeat;
+}
+.benefit-title {
+  letter-spacing: 8px;
+  letter-spacing: 0.5rem;
+}
+.benefit-text {
+  word-spacing: 8px;
+  word-spacing: 0.5rem;
 }

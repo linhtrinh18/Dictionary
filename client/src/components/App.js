@@ -6,7 +6,6 @@ import WordEdit from './words/WordEdit';
 import WordList from './words/WordList';
 import WordShow from './words/WordShow';
 import FrontPage from './words/FrontPage';
-
 import history from '../history';
 
 const App = () => {

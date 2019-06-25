@@ -8,14 +8,24 @@ import Header from '../Header'
 class WordList extends React.Component {
     constructor(props) {
         super(props);
+        this.firstRender = true
         this.state = {
             myExample:'',
             id : ''
         };
     }
-    componentDidMount() {
+    // componentDidMount() {
+    //     if(this.props.currentUserId){
+    //         this.props.fetchDictPerPage(this.props.currentUserId,1);
+    //     }
+    // }
+    
+    componentDidUpdate() {
         if(this.props.currentUserId){
-            this.props.fetchDictPerPage(this.props.currentUserId,1);
+            if(this.firstRender){
+                this.props.fetchDictPerPage(this.props.currentUserId,1);
+                this.firstRender = false
+            }
         }
     }
     
@@ -140,7 +150,7 @@ class WordList extends React.Component {
         return (
             <div>
                 <Header displaySignIn={true}/>
-                <div key={'container'} className="container">
+                <div key={'container'} className="container pt-4">
                         <h1 key={'What you have learn so far'} className="mt-5 mb-4 pb-5 text-primary" style={{fontFamily: 'Coiny, cursive'}}><u>{this.props.currentUserId ? 'What you have learned so far:': null}</u></h1>
                         <Pagination/>
                         <div key={'renderList'}  className="mb-2">
@@ -151,7 +161,7 @@ class WordList extends React.Component {
                         </div>
                 </div>
             </div>
-            );
+        );
         
     }
 }

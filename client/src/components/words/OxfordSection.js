@@ -17,8 +17,8 @@ class OxfordSection extends React.Component {
     renderOxford = (oxford) => {
     if(oxford) {
         return (
-                <div key={'oxford'} className="border-left">
-                    <div key={oxford[0].text} className="ml-2">
+                <div key={'oxford'}>
+                    <div key={oxford[0].text}>
                         <p className="display-4">{oxford[0].text}</p>
                         <span onClick={e => this.playSound(this.renderOxfordAudio(oxford).audio) }>
                             <audio key={this.renderOxfordAudio(oxford).audio} src={this.renderOxfordAudio(oxford).audio} autoPlay>
