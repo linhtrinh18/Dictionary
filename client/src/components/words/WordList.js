@@ -143,6 +143,8 @@ class WordList extends React.Component {
                     return <div key={index}></div>
                 }
             })
+        } else {
+            return <p className="introduction">Loading....</p>
         }
     }
     
@@ -151,7 +153,7 @@ class WordList extends React.Component {
             <div>
                 <Header displaySignIn={true}/>
                 <div key={'container'} className="container pt-4">
-                        <h1 key={'What you have learn so far'} className="mt-5 mb-4 pb-5 text-primary" style={{fontFamily: 'Coiny, cursive'}}><u>{this.props.currentUserId ? 'What you have learned so far:': null}</u></h1>
+                        <h1 key={'What you have learn so far'} className="mt-5 mb-4 pb-5 text-primary font-italic introduction">{this.props.currentUserId ? 'What you have learned so far:': 'Loading..!'}</h1>
                         <Pagination/>
                         <div key={'renderList'}  className="mb-2">
                             {this.renderList()}

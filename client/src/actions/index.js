@@ -147,3 +147,9 @@ export const deleteDict = (_id) => async dispatch => {
     await dict.put(`/dict/${_id}`);
     dispatch({type: DELETE_DICT, payload: _id});
 };
+
+export const fetchRandom = (userId) => async dispatch => {
+    const response = await dict.post('/random', {userId: userId});
+    console.log("Random response:", response)
+    // dispatch({type: 'FETCH_DICTS_PER_PAGE', payload: {data: response.data.docs, total: response.data.total, page:Number(response.data.page), pages: response.data.pages}});
+}        

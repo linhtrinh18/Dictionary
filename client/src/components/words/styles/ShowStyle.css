@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css?family=Kaushan+Script");
+/*@import url("https://fonts.googleapis.com/css?family=Kaushan+Script");*/
 @import url('https://fonts.googleapis.com/css?family=Mali&display=swap');
 body {
-  padding-top: 58px;
+  padding-top: 50px;
 }
 
 p {
@@ -119,12 +119,12 @@ hr {
 } 
 
 .fontpage {
-    position: absolute;
+    /*position: absolute;*/
     background-image: url("picture.jpg");
   	width: 100%;
   	height: 100%;
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    /*background-attachment: fixed;*/
     background-size: cover;
     color:white;
     background-position: center;
@@ -140,11 +140,11 @@ hr {
 }
 
 .max-height {
-  min-height: calc(100vh - 66px);;
+  min-height: calc(100vh - 50px);;
   background: linear-gradient(rgba(141, 153, 174, 0.5), rgba(141, 153, 174, 0.1)), url("picture.jpg");
   background-position: center;
   background-size:cover;
-  background-attachment: fixed;
+  /*background-attachment: fixed;*/
   background-repeat:no-repeat;
   position: relative
 }
@@ -213,11 +213,9 @@ hr {
   cursor: pointer;
 }
 .feature-image {
-  -webkit-transition: all 1s ease-in-out;
   transition: all 1s ease-in-out;
 }
 .img-container:hover .store-img {
-  -webkit-transform: scale(1.2);
   transform: scale(1.2);
 }
 .feature-img-icon {
@@ -229,23 +227,18 @@ hr {
   background: rgb(249, 228, 148);
   border-top-left-radius: 16px;
   border-top-left-radius: 1rem;
-  -webkit-transition: all 1s ease-in-out;
   transition: all 1s ease-in-out;
-  -webkit-transform: translate(100%, 100%);
   transform: translate(100%, 100%);
 }
 .img-container:hover .store-item-icon {
-  -webkit-transform: translate(0, 0);
   transform: translate(0, 0);
 }
 .feature-img-icon:hover {
   color: #fff;
 }.single-item {
-  -webkit-transition: all 0.3 linear;
   transition: all 0.3 linear;
 }
 .single-item:hover {
-  -webkit-box-shadow: 0 10px 15px rgb(0, 0, 0);
   box-shadow: 0 10px 15px rgb(0, 0, 0);
 }
 .img-container {
@@ -254,11 +247,9 @@ hr {
   cursor: pointer;
 }
 .feature-img {
-  -webkit-transition: all 1s ease-in-out;
   transition: all 0.5s ease-in-out;
 }
 .img-container:hover .feature-image {
-  -webkit-transform: scale(1.2);
   transform: scale(1.2);
 }
 .feature-img-icon {
@@ -270,13 +261,10 @@ hr {
   background: #28a745;
   border-top-left-radius: 16px;
   border-top-left-radius: 1rem;
-  -webkit-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
-  -webkit-transform: translate(100%, 100%);
   transform: translate(100%, 100%);
 }
 .img-container:hover .feature-img-icon {
-  -webkit-transform: translate(0, 0);
   transform: translate(0, 0);
 }
 .feature-img-icon:hover {
@@ -284,20 +272,10 @@ hr {
 }
 
 /*benefit*/
-
-/* services */
 .benefits {
   color: #fff;
-  background: -webkit-gradient(
-      linear,
-      left top,
-      left bottom,
-      from(rgba(0, 0, 0, 0.6)),
-      to(rgba(0, 0, 0, 0.6))
-    ),
-    url("creative.jpg") center/cover fixed no-repeat;
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-    url("creative.jpg") center/cover fixed no-repeat;
+  url("creative.jpg") center/cover no-repeat;
 }
 .benefit-title {
   letter-spacing: 8px;

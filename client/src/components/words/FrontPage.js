@@ -1,5 +1,4 @@
 import React from 'react'
-import './styles/FrontPage.css'
 import GoogleAuth from '../GoogleAuth'
 import Header from '../Header'
 import { connect } from 'react-redux'

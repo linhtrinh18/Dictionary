@@ -37,26 +37,26 @@ class Header extends React.Component {
             <div>
                 <Navbar bg="primary" expand="md" variant="dark" fixed="top">
                         <Link to="/" className="navbar-brand ml-lg-4">
-                            <img style={{width:'35px'}} src={require('./words/styles/books.svg')} alt="logo"/>
+                            <img style={{width:'20px'}} src={require('./words/styles/books.svg')} alt="logo"/>
                             <span className="ml-2"> Dictionary</span>
                         </Link>
-                    <Nav>
-                        <Link to="/review" className="nav-link">
-                         Review
-                        </Link>
-                    </Nav>
-                    <Nav>
-                        <Link to="/" className="nav-link">
-                         FlashCard
-                        </Link>
-                    </Nav>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav>
+                            <Link to="/review" className="nav-link">
+                             Review
+                            </Link>
+                        </Nav>
+                        <Nav>
+                            <Link to="/flashcard" className="nav-link">
+                                FlashCard  
+                            </Link>
+                        </Nav>
                         <Form inline onSubmit={this.props.handleSubmit(this.onSubmit)} autoComplete="off">
                           <Field name="word" component={this.renderInput} />
                         </Form>
                         <div className='ml-auto'>
-                            <GoogleAuth displaySignIn={this.props.displaySignIn} />
+                            <GoogleAuth displaySignIn={this.props.displaySignIn} navBar={'navBar'} />
                         </div>
                   </Navbar.Collapse>
                 </Navbar>

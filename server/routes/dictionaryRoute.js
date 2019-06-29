@@ -178,5 +178,20 @@ router.post('/bingimage', async (req, res) => {
 
 });
 
+router.post('/random', async (req, res) => {
+    const userID = req.body.userId
+    console.log(req.body.userId)
+    try {
+        const dict = await Dict.aggregate([{ $match: { userID: userID } },{ $sample: { size: 1 } }])
+        if (!dict){
+            return res.status(404).send()
+        }
+        res.send(dict)
+    } catch (e) {
+        res.status(400).send(e)
+    }
+
+});
+
 
 module.exports = router;

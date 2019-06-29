@@ -6,6 +6,7 @@ import WordEdit from './words/WordEdit';
 import WordList from './words/WordList';
 import WordShow from './words/WordShow';
 import FrontPage from './words/FrontPage';
+import FlashCard from './words/FlashCard';
 import history from '../history';
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
             <div>
                 <Route path='/' exact component = {FrontPage} />
                 <Route path='/review' exact component= {WordList} />
+                <Route path='/flashcard' exact component= {FlashCard} />
                 <Route path='/words/new' exact component= {WordCreate} />
                 <Route path='/words/edit/:id' exact component= {WordEdit} />
                 <Route path='/words/delete' exact component= {WordDelete} />
