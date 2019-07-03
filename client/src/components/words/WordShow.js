@@ -34,7 +34,7 @@ class WordShow extends React.Component {
             );
             
         } else {
-            return null
+            return <p className="p-3 m-3">Loading....</p>
         }
     }
     render () {

@@ -126,6 +126,7 @@ export const deleteWord = (id) => async (dispatch, getState) => {
 export const removeEngMean = (data) => async (dispatch, getState) => {
     dispatch({type: 'REMOVE_ENG_MEAN', payload: data});
 }
+
 export const fetchDicts = (userId) => async dispatch => {
     const response = await dict.get(`/dict/${userId}`);
     dispatch({type: FETCH_DICTS, payload: response.data});
@@ -150,6 +151,6 @@ export const deleteDict = (_id) => async dispatch => {
 
 export const fetchRandom = (userId) => async dispatch => {
     const response = await dict.post('/random', {userId: userId});
-    console.log("Random response:", response)
-    // dispatch({type: 'FETCH_DICTS_PER_PAGE', payload: {data: response.data.docs, total: response.data.total, page:Number(response.data.page), pages: response.data.pages}});
+    dispatch({type: 'FETCH_RANDOM', payload: {data: response.data}});
+    return response.data
 }        

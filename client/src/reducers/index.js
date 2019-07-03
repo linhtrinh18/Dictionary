@@ -4,6 +4,7 @@ import userReducer from './userReducer'
 import transReducer from './transReducer'
 import postReducer from './postReducer'
 import postexReducer from './postexReducer'
+import randomReducer from './randomReducer'
 
 import authReducer from './authReducer'
 
@@ -13,5 +14,6 @@ export default combineReducers ({
     user: userReducer,
     dict: transReducer,
     post: postReducer,
-    postex: postexReducer
+    postex: postexReducer,
+    rand: randomReducer
 })

@@ -285,3 +285,9 @@ hr {
   word-spacing: 8px;
   word-spacing: 0.5rem;
 }
+
+
+.random {
+  width:1200px;
+  max-width: 1200px;
+}

@@ -66,7 +66,7 @@ class WordList extends React.Component {
     renderMeaning(data, index) {
         return (
             <div className="row">
-                <div className= "col-sm-8">
+                <div className="col-sm-8">
                     <span onClick={e => this.deleteWord(data._id)}className="float-right text-danger x-text pr-1">
                         <i  className="fa fa-trash" style={{ fontSize: '1.8rem'}}></i>
                     </span>
@@ -85,12 +85,9 @@ class WordList extends React.Component {
                         }
                     })}</p>
                     </div>
-                    
-                    
                     <form className="pt-2" onSubmit={this.onFormSubmitExample}>
                         <input onChange={e => this.handleExampleChange(e, data._id)} value={this.state.id === data._id ? this.state.myExample: ''} type="text" className="your-example mt-2" placeholder="Input your example here..."/>
                     </form>
-             
                     <hr/>
                     <div>
                         {this.renderMyExample(data._id)}
