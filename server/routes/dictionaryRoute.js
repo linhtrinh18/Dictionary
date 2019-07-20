@@ -136,7 +136,7 @@ router.post('/google', async (req, res) => {
     const response = await googleApi(req.body.word)
     const baseFrom = helper.checkBaseform(response.data)
     // Check valid word
-    if(response.data.dict || response.data.sentences && response.data.confidence > 0.5) {
+    if(response.data.dict || response.data.sentences && response.data.confidence === 1) {
         req.body.word = baseFrom;
         const saveData = helper.saveVietMean(req.body,response.data)
         const dict = new Dict(saveData)
@@ -147,8 +147,20 @@ router.post('/google', async (req, res) => {
             res.status(400).send(e)
         }
     } else {
-    const spellCheckResonse = await spellCheck(req.body.word)
-    res.status(201).send({google: [spellCheckResonse, req.body.word] });
+        const spellCheckResonse = await spellCheck(req.body.word)
+        if (spellCheckResonse === baseFrom) {
+            req.body.word = baseFrom;
+            const saveData = helper.saveVietMean(req.body,response.data)
+            const dict = new Dict(saveData)
+            try {
+                await dict.save()
+                res.status(201).send({data: dict, google:response.data});
+            }catch(e) {
+                res.status(400).send(e)
+            }
+        } else {
+            res.status(201).send({google: [spellCheckResonse, req.body.word] });
+        }
     }
 });
 
@@ -182,7 +194,7 @@ router.post('/random', async (req, res) => {
     const userId = req.body.userId
     console.log(req.body.userId)
     try {
-        const dict = await Dict.aggregate([{ $match: { userId: userId } },{ $sample: { size: 5 } }])
+        const dict = await Dict.aggregate([{ $match: { userId: userId } },{ $sample: { size: 30 } }])
         if (!dict){
             return res.status(404).send()
         }

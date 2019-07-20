@@ -129,6 +129,7 @@ class WordList extends React.Component {
         );
     }
     renderList() {
+        if(this.props.currentUserId){
         if(this.props.dicts.length >= 4){
             return this.props.dicts.map((dict,index) => {
                     if(dict.userId === this.props.currentUserId){
@@ -143,6 +144,9 @@ class WordList extends React.Component {
         } else {
             return <p className="introduction">Loading....</p>
         }
+        } else {
+            return <p>Sign In to review your Vocabularies</p>
+        }
     }
     
     render() {
@@ -150,7 +154,7 @@ class WordList extends React.Component {
             <div>
                 <Header displaySignIn={true}/>
                 <div key={'container'} className="container pt-4">
-                        <h1 key={'What you have learn so far'} className="mt-5 mb-4 pb-5 text-primary font-italic introduction">{this.props.currentUserId ? 'What you have learned so far:': 'Loading..!'}</h1>
+                        <h1 key={'What you have learn so far'} className="mt-5 mb-4 pb-5 text-primary font-italic introduction">{this.props.currentUserId ? 'What you have learned so far:': 'What you have learned so far:'}</h1>
                         <Pagination/>
                         <div key={'renderList'}  className="mb-2">
                             {this.renderList()}

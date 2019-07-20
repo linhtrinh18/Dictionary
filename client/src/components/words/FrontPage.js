@@ -71,7 +71,7 @@ class FrontPage extends React.Component {
                 <div className="container-fluid ">
                     <div className="row max-height justify-content-center pt-4">
                         <div className="col-10 mx-auto banner text-center">
-                            <h1 className="text-capitalize introduction">welcome to <strong className="banner-title introduction">My Ditionary</strong></h1>
+                            <h1 className="text-capitalize introduction">welcome to <strong className="banner-title introduction">My Dictionary</strong></h1>
                             {this.renderGoogleAuthButton()}
                         </div>
                     </div>
@@ -100,7 +100,7 @@ class FrontPage extends React.Component {
                 <div className="container my-4 introduction">
                     <div className="row">
                         <div className="col-10 mx-auto col-sm-6 text-center">
-                            <h1 className="text-capitalize introduction">how <strong className="feature-banner-title">MyDicts work</strong></h1>
+                            <h1 className="text-capitalize introduction">how <strong className="feature-banner-title">My Dictionary work</strong></h1>
                         </div>
                     </div>
                     <div className="row">
